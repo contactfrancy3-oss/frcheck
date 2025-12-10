@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrancyHostinger - L'avenir du divertissement à domicile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        /* --- STYLE GLOBAL DE FOND (Nightwatch Style) --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Deep charcoal - Fallback */
+            color: #E5E7EB; /* Light gray text */
+            
+            /* L'IMAGE DE FOND EST DÉFINIE ICI ET COUVRE TOUT */
+            /* EDIT: Make sure to host this image yourself as discussed previously */
+            background-image: url('https://i.pinimg.com/1200x/42/82/2c/42822cb84150a8061415684a8a4b3641.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect pour toute la page */
+        }
+        
+        /* Dark Overlay for Text Readability (70% black) */
+        .page-overlay {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); 
+            z-index: -1; 
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .section-bg {
+            background-color: rgba(13, 17, 23, 0.85); 
+            backdrop-filter: blur(5px);
+        }
+        
+        .card-bg {
+            background-color: rgba(31, 41, 55, 0.9); 
+            backdrop-filter: blur(3px);
+        }
+
+        .poster-card {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .poster-card:hover {
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.7); /* Subtle indigo glow */
+        }
+        
+
+        /* ===== STYLE "INFINITE SCROLL HORIZONTAL" (Marquee Animation) ===== */
+        @keyframes horizontal-scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
+        }
+
+        .pro-motion-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden; 
+            /* Masking for fade effect on sides */
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+
+        .pro-motion-track {
+            display: flex;
+            /* Animation duration is set dynamically in JS */
+            animation: horizontal-scroll-left 30s linear infinite; 
+            will-change: transform;
+        }
+        
+        /* --- STYLE DES ÉLÉMENTS LARGES (Movies & Series) --- */
+        .wide-poster-item {
+            flex-shrink: 0;
+            width: 500px; /* Wide width for landscape posters */
+            aspect-ratio: 16/9; /* Standard landscape aspect ratio */
+            margin-right: 24px; 
+            border-radius: 0.75rem; 
+            overflow: hidden;
+            background-color: #1f2937; 
+            border: 1px solid rgba(107, 114, 128, 0.5); 
+            /* FIXED: Enable pointer events for hover functionality */
+            pointer-events: auto;
+            cursor: pointer; 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .wide-poster-item:hover {
+             transform: scale(1.05);
+             box-shadow: 0 0 20px rgba(79, 70, 229, 0.5); 
+        }
+
+        /* --- STYLE DES ÉLÉMENTS VERTICAUX (Sport) --- */
+        .vertical-poster-item {
+            flex-shrink: 0;
+            width: 200px; /* Fixed width for portrait posters */
+            aspect-ratio: 2/3; /* Standard portrait poster ratio */
+            margin-right: 24px; 
+            border-radius: 0.75rem; 
+            overflow: hidden;
+            background-color: #1f2937; 
+            border: 1px solid rgba(107, 114, 128, 0.5); 
+            /* FIXED: Enable pointer events for hover functionality */
+            pointer-events: auto;
+            cursor: pointer; 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .vertical-poster-item:hover {
+             transform: scale(1.05);
+             box-shadow: 0 0 20px rgba(79, 70, 229, 0.5); 
+        }
+        
+        /* --- STYLE DES ÉLÉMENTS CARRÉS (Channels) --- */
+        .square-channel-item {
+            flex-shrink: 0;
+            width: 180px; 
+            aspect-ratio: 1/1; 
+            margin-right: 24px; 
+            border-radius: 0.75rem; 
+            overflow: hidden;
+            background-color: #1f2937; 
+            border: 1px solid rgba(107, 114, 128, 0.5); 
+            pointer-events: none;
+            cursor: default; 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .square-channel-item:hover {
+             transform: scale(1.05);
+             box-shadow: 0 0 20px rgba(79, 70, 229, 0.5); 
+        }
+        
+        .square-channel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+
+        /* ===== CREATIVE & PROFESSIONAL PRICING CARD STYLES ===== */
+        .pricing-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .pricing-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* EDIT: Made hover effect more subtle */
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+        }
+
+        .pricing-card.featured {
+            border: 2px solid #4f46e5;
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.9), rgba(79, 70, 229, 0.1));
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.4);
+        }
+
+        .pricing-card.featured:hover {
+            box-shadow: 0 0 40px rgba(79, 70, 229, 0.6);
+        }
+
+        .featured-badge {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4);
+        }
+
+        .cta-button {
+            background: linear-gradient(90deg, #4f46e5, #6366f1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button.featured-btn {
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+        }
+
+        /* Custom Toggle Switch for Adult Pack */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background-color: #4b5563;
+            border-radius: 34px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        input:checked + .toggle-slider {
+            transform: translateX(24px);
+            background-color: #4f46e5;
+        }
+
+        input:checked ~ .toggle-switch {
+            background-color: #4f46e5;
+        }
+
+        /* EDIT: Logo styles inspired by dinoiptv.com */
+        #main-logo {
+            background-color: transparent !important; 
+            box-shadow: none !important;
+            filter: drop-shadow(0 0 0 transparent) !important;
+            max-height: 60px; /* Increased height for better visibility */
+            width: auto; /* Maintain aspect ratio */
+        }
+        
+        .logo-container {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+        
+        /* Navigation bar adjustments */
+        .navbar {
+            position: relative;
+            height: 80px;
+            background: linear-gradient(to right, rgba(13, 17, 23, 0.95), rgba(13, 17, 23, 0.85));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 2rem;
+            margin-left: auto;
+        }
+        
+        /* Contact and More Infos Section Styles */
+        .contact-info-card {
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.9), rgba(79, 70, 229, 0.1));
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.2);
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .info-icon {
+            background-color: rgba(79, 70, 229, 0.15);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        
+        .info-content h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #E5E7EB;
+        }
+        
+        .info-content p {
+            color: #9CA3AF;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        .email-link {
+            color: #4f46e5;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .email-link:hover {
+            color: #6366f1;
+            text-decoration: underline;
+        }
+        
+        /* PayPal badge styles */
+        .paypal-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(0, 48, 135, 0.1);
+            border: 1px solid rgba(0, 48, 135, 0.3);
+            border-radius: 8px;
+            padding: 6px 12px;
+            margin-top: 8px;
+        }
+        
+        .paypal-logo {
+            height: 24px;
+            width: auto;
+            margin-right: 8px;
+        }
+
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#0d1117', /* Deep charcoal */
+                        'card-bg': '#1f2937',     /* Dark slate gray */
+                        'accent-indigo': '#4f46e5', /* Indigo 600 */
+                        'text-light': '#E5E7EB',
+                        'text-muted': '#9CA3AF',
+                    },
+                }
+            }
+        }
+
+        // --- Données pour le Marquee Films/Séries (6 items) ---
+        const moviePosters = [
+            { title: "Film Aventure", img: "https://i.pinimg.com/1200x/a2/71/f0/a271f00df372a3023eac0c6ccfbaf104.jpg" }, 
+            { title: "Série Dramatique", img: "https://i.pinimg.com/1200x/40/1b/58/401b58cce54d270793ab01d548a9d0a0.jpg" }, 
+            { title: "Contenu Précédent", img: "https://i.pinimg.com/1200x/8f/de/b8/8fdeb8f8cc9b17c0c17cb6c5ae0fd35c.jpg" }, 
+            { title: "Contenu D", img: "https://i.pinimg.com/1200x/3f/2c/b4/3f2cb48061007aeeacc4978854bc5248.jpg" },
+            { title: "Contenu E", img: "https://i.pinimg.com/1200x/1e/d6/cf/1ed6cfa2d7324f74e755e48330efabe3.jpg" },
+            { title: "Contenu F", img: "https://i.pinimg.com/1200x/a3/33/3a/a3333a1a6ff63ebfae883cb60b8792d4.jpg" },
+            { title: "Contenu A", img: "https://i.pinimg.com/1200x/77/f6/a3/77f6a3989bd939e3b833132366eb630a.jpg" },
+            { title: "Contenu C", img: "https://cdn.dribbble.com/userupload/8296701/file/original-ff6ea546c09163c03b8dd98d109e547d.png" }
+        ];
+
+        // --- Données pour le Marquee Sport (10 items) ---
+        const wideBannerUrl = "https://i.pinimg.com/736x/1a/1f/7f/1a1f7f48ac4650a604e1ce6c38c405ce.jpg";
+        const sportPosters = [
+            { title: "Ligue Nationale", img: wideBannerUrl }, // Vertical 
+            { title: "Match de Football en Direct", img: "https://i.pinimg.com/1200x/38/57/26/3857266bf73582362363b0fd82637edf.jpg" }, // Vertical
+            { title: "NBA Match 1", img: "https://i.pinimg.com/1200x/0c/07/ce/0c07cef4d1b93d89a7122186e0b4e204.jpg" }, // Vertical
+            { title: "WC26", img: "https://i.pinimg.com/1200x/b4/33/b7/b433b7edae84bea89d8f0a272e9740d2.jpg" }, // Vertical
+            { title: "CAN25", img: "https://i.pinimg.com/1200x/0b/f9/75/0bf975ea0f784c1781e1fe84f8da4b33.jpg" }, // Vertical
+            { title: "Tennis", img: "https://i.pinimg.com/1200x/9f/0d/10/9f0d10148b648a070eb80890d85b3bc4.jpg" }, // Vertical
+            { title: "Live Football", img: "https://i.pinimg.com/736x/2f/76/78/2f7678847a6e3e75ea72179bfce77c33.jpg" },
+            { title: "UFC", img: "https://i.pinimg.com/736x/3a/9a/ac/3a9aacf5326195b3730aebf5e1614078.jpg" },
+            { title: "Formule 1", img: "https://i.pinimg.com/1200x/bf/e2/11/bfe2113870ab43cf5971afa659d84fa8.jpg" },
+            { title: "NFL", img: "https://i.pinimg.com/736x/21/46/63/214663ea41bcdd4e4b5af5986822d956.jpg" }
+        ];
+
+        const channelLogos = [
+            { title: "Champions League", img: "https://i.pinimg.com/736x/4a/7b/1b/4a7b1bad501e8af05d5bb793350edca5.jpg" },
+            { title: "Europa League", img: "https://i.pinimg.com/1200x/00/03/91/0003917afc826de200f8ca182f7009dc.jpg" },
+            { title: "Conferance League", img: "https://i.pinimg.com/1200x/dd/e0/86/dde086aa00ff22a8b1f5931bb8f338b3.jpg" },
+            { title: "Premier League", img: "https://i.pinimg.com/1200x/a8/9c/c7/a89cc7f74d03a4082c55f817df5f4379.jpg" },
+            { title: "Laliga", img: "https://i.pinimg.com/1200x/1e/04/92/1e0492d9c6b3b0409a62a2d7babc380e.jpg" },
+            { title: "Serie A", img: "https://i.pinimg.com/1200x/46/88/fb/4688fb0797c7fbb7ea685235de518bbc.jpg" },
+            { title: "Bundesliga", img: "https://i.pinimg.com/1200x/fa/6c/cf/fa6ccffacabcbcf005571ddfcedcfae1.jpg" },
+            { title: "Ligue 1", img: "https://i.pinimg.com/736x/06/54/fb/0654fb50dc2c1b372a5d8f8196a7d14d.jpg" }
+        ];
+
+        // --- Fonctions de l'application (Modale, etc.) ---
+        function showModal(title, message) {
+            const modal = document.getElementById('custom-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        function handleSubscriptionClick(planName, adultPackId) {
+            const emailAddress = "contactfrancy3@gmail.com";
+            let subject = encodeURIComponent(`Demande d'abonnement FrancyHostinger - Forfait ${planName}`);
+            let body = encodeURIComponent(`Bonjour,\n\nJe suis intéressé(e) par le forfait ${planName} que j'ai vu sur votre site web.\n\nVeuillez me fournir les détails pour finaliser l'abonnement et le paiement.\n\nCordialement,`);
+
+            const adultPackCheckbox = document.getElementById(adultPackId);
+            if (adultPackCheckbox && adultPackCheckbox.checked) {
+                subject = encodeURIComponent(`Demande d'abonnement FrancyHostinger - Forfait ${planName} + Pack Adulte`);
+                body = encodeURIComponent(`Bonjour,\n\nJe suis intéressé(e) par le forfait ${planName} avec le Pack Adulte optionnel que j'ai vu sur votre site web.\n\nVeuillez me fournir les détails pour finaliser l'abonnement et le paiement.\n\nCordialement,`);
+            }
+
+            window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+        }
+        
+        // --- Fonction pour initialiser le Marquee Wide (Films/Séries) ---
+        function initializeWideMarquee(trackId, posters, speedSeconds) {
+            const track = document.getElementById(trackId);
+            if (!track) return;
+            
+            const itemWidth = 500 + 24; 
+            const totalItemsInTrack = posters.length * 2;
+            const totalWidth = itemWidth * totalItemsInTrack;
+
+            track.style.width = `calc(${totalWidth}px)`;
+            track.style.animationDuration = `${speedSeconds}s`; 
+
+            const generateItem = (poster) => {
+                return `
+                    <div class="wide-poster-item poster-card">
+                        <img src="${poster.img}" 
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='https://placehold.co/1600x900/324C9E/F7F8FB/png?text=Erreur+Image';" 
+                             alt="Affiche ${poster.title}" 
+                             class="w-full h-full object-cover">
+                    </div>
+                `;
+            };
+
+            const duplicatedPosters = [...posters, ...posters]; 
+            track.innerHTML = duplicatedPosters.map(generateItem).join('');
+            
+            // NEW APPROACH: Add event listeners to container
+            const container = track.parentElement;
+            
+            // Pause on mouseenter
+            container.addEventListener('mouseenter', () => {
+                console.log('Mouse entered movies container');
+                track.style.animationPlayState = 'paused';
+            });
+            
+            // Resume on mouseleave
+            container.addEventListener('mouseleave', () => {
+                console.log('Mouse left movies container');
+                track.style.animationPlayState = 'running';
+            });
+        }
+
+        // --- Fonction pour initialiser le Marquee Vertical (Sport) ---
+        function initializeVerticalMarquee(trackId, posters, speedSeconds) {
+            const track = document.getElementById(trackId);
+            if (!track) return;
+            
+            const itemWidth = 200 + 24; 
+            const totalItemsInTrack = posters.length * 2;
+            const totalWidth = itemWidth * totalItemsInTrack;
+
+            track.style.width = `calc(${totalWidth}px)`;
+            track.style.animationDuration = `${speedSeconds}s`; 
+
+            const generateItem = (poster) => {
+                let objectFitClass = 'object-cover';
+                let extraClasses = '';
+
+                if (poster.img === wideBannerUrl) {
+                    objectFitClass = 'object-contain';
+                    extraClasses = 'bg-primary-dark';
+                }
+
+                return `
+                    <div class="vertical-poster-item poster-card">
+                        <img src="${poster.img}" 
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x600/324C9E/F7F8FB/png?text=Erreur+Image';" 
+                             alt="Affiche ${poster.title}" 
+                             class="w-full h-full ${objectFitClass} ${extraClasses}">
+                    </div>
+                `;
+            };
+
+            const duplicatedPosters = [...posters, ...posters]; 
+            track.innerHTML = duplicatedPosters.map(generateItem).join('');
+            
+            // NEW APPROACH: Add event listeners to container
+            const container = track.parentElement;
+            
+            // Pause on mouseenter
+            container.addEventListener('mouseenter', () => {
+                console.log('Mouse entered sports container');
+                track.style.animationPlayState = 'paused';
+            });
+            
+            // Resume on mouseleave
+            container.addEventListener('mouseleave', () => {
+                console.log('Mouse left sports container');
+                track.style.animationPlayState = 'running';
+            });
+        }
+
+        function initializeChannelMarquee(trackId, logos, speedSeconds) {
+            const track = document.getElementById(trackId);
+            if (!track) return;
+            
+            const itemWidth = 180 + 24; // Item width + margin
+            const totalItemsInTrack = logos.length * 2;
+            const totalWidth = itemWidth * totalItemsInTrack;
+
+            track.style.width = `calc(${totalWidth}px)`;
+            track.style.animationDuration = `${speedSeconds}s`;
+
+            const generateItem = (logo) => {
+                return `
+                    <div class="square-channel-item">
+                        <img src="${logo.img}" 
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='https://placehold.co/180x180/324C9E/F7F8FB/png?text=Logo';" 
+                             alt="Logo de la ${logo.title}" 
+                             class="w-full h-full object-cover">
+                    </div>
+                `;
+            };
+
+            const duplicatedLogos = [...logos, ...logos];
+            track.innerHTML = duplicatedLogos.map(generateItem).join('');
+        }
+        
+        // --- Intersection Observer for fade-in animations ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Lancement après le chargement du DOM
+        window.addEventListener('load', () => {
+            lucide.createIcons(); 
+
+            initializeWideMarquee('movies-marquee-track', moviePosters, 30); 
+            initializeVerticalMarquee('sports-marquee-track', sportPosters, 50); 
+            initializeChannelMarquee('channels-marquee-track', channelLogos, 80);
+
+            // Observe all pricing cards for animation
+            document.querySelectorAll('.pricing-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Mobile menu logic (Updated)
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuButton.addEventListener('click', () => {
+                // Toggle menu visibility
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('flex');
+                } else {
+                    mobileMenu.classList.remove('flex');
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
+            // Close menu when clicking on links
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('flex');
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            
+            // Close menu when pressing Escape key
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    mobileMenu.classList.remove('flex');
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</head>
+<body class="text-text-light antialiased">
+    <div class="page-overlay"></div>
+
+    <div class="content-wrapper">
+
+        <!-- EDIT: Navigation inspired by dinoiptv.com -->
+        <nav class="navbar fixed top-0 left-0 right-0 z-50">
+            <!-- Logo positioned in maximum left corner -->
+            <a href="#hero" class="logo-container">
+                <img id="main-logo"
+                     src="FRANCY.png" 
+                     alt="FrancyHostinger Logo" 
+                     onerror="this.onerror=null; this.src='https://placehold.co/150x40/4f46e5/ffffff?text=FHostinger';"
+                     class="transition duration-300 transform hover:scale-105">
+            </a>
+
+            <!-- Navigation links positioned on the right -->
+            <div class="nav-content">
+                <div class="nav-links hidden md:flex items-center space-x-8 text-text-muted font-medium">
+                    <a href="#hero" class="hover:text-accent-indigo transition duration-300">Accueil</a>
+                    <a href="#content" class="hover:text-accent-indigo transition duration-300">Catalogue</a>
+                    <a href="#test-iptv" class="hover:text-accent-indigo transition duration-300">Test IPTV</a>
+                    <a href="#pricing" class="hover:text-accent-indigo transition duration-300">Tarifs</a>
+                </div>
+
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-text-light hover:bg-gray-700 transition duration-300" aria-label="Menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- FIXED: Mobile Menu with proper positioning and z-index -->
+        <div id="mobile-menu" class="fixed top-0 left-0 right-0 w-full h-full bg-black bg-opacity-95 z-50 hidden">
+            <nav class="flex flex-col items-center justify-center h-full p-4">
+                <a href="#hero" class="block py-3 px-3 text-text-muted hover:text-accent-indigo hover:bg-gray-800 rounded-md transition duration-300">Accueil</a>
+                <a href="#content" class="block py-3 px-3 text-text-muted hover:text-accent-indigo hover:bg-gray-800 rounded-md transition duration-300">Catalogue</a>
+                <a href="#test-iptv" class="block py-3 px-3 text-text-muted hover:text-accent-indigo hover:bg-gray-800 rounded-md transition duration-300">Test IPTV</a>
+                <a href="#pricing" class="block py-3 px-3 text-text-muted hover:text-accent-indigo hover:bg-gray-800 rounded-md transition duration-300">Tarifs</a>
+            </nav>
+        </div>
+
+        <div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-card-bg p-6 rounded-xl shadow-2xl max-w-sm w-full border border-accent-indigo">
+                <h3 id="modal-title" class="text-xl font-bold mb-3 text-accent-indigo"></h3>
+                <p id="modal-message" class="text-text-muted mb-6"></p>
+                <button onclick="closeModal()" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light font-semibold py-2 rounded-lg transition duration-300">
+                    Fermer
+                </button>
+            </div>
+        </div>
+
+        <header id="hero" class="min-h-screen flex items-center justify-center pt-20 pb-10">
+            <div class="hero-content text-center max-w-4xl px-4 mx-auto space-y-8">
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight text-white">
+                    L'avenir du divertissement à domicile est <span class="text-accent-indigo">Là.</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
+                    Cinéma 4K sans interruption ni publicité à la maison. Streamez du contenu exclusif et des films en avant-première avec FrancyHostinger.
+                </p>
+                <div class="pt-4">
+                    <a href="#test-iptv" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-accent-indigo hover:bg-indigo-700 transform transition duration-500 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-accent-indigo focus:ring-opacity-50">
+                        Demandez votre essai gratuit de 24 heures
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <section id="content" class="section-bg py-24 px-4 md:px-12 overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-6">
+                    Films et Séries <span class="text-accent-indigo">Exclusifs</span>
+                </h2>
+                <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">
+                    Explorez des films 4K HDR, des séries acclamées et des originaux introuvables ailleurs.
+                </p>
+                
+                <div class="pro-motion-container">
+                    <div id="movies-marquee-track" class="pro-motion-track">
+                        </div>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-6 mt-24">
+                    Sport en Direct et <span class="text-accent-indigo">Événements</span>
+                </h2>
+                <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">
+                    Ne manquez jamais un match. De la ligue de football aux événements mondiaux, vivez l'action en direct.
+                </p>
+
+                <div class="pro-motion-container">
+                    <div id="sports-marquee-track" class="pro-motion-track">
+                        </div>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-6 mt-24">
+                    Highlights <span class="text-accent-indigo">des Ligues</span>
+                </h2>
+                <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">
+                    Accès instantané à des milliers de chaînes du monde entier, 24h/24 et 7j/7.
+                </p>
+
+                <div class="pro-motion-container">
+                    <div id="channels-marquee-track" class="pro-motion-track">
+                    </div>
+                </div>
+        </section>
+
+        <section id="test-iptv" class="section-bg py-24 px-4 md:px-12 border-t border-b border-gray-700/50">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                    Demandez Votre <span class="text-accent-indigo">Test IPTV 24H</span> Gratuit
+                </h2>
+                <p class="text-center text-lg text-text-muted mb-12 max-w-2xl mx-auto">
+                    Remplissez ce formulaire pour recevoir votre accès test. Découvrez la puissance de FrancyHostinger sans engagement.
+                </p>
+                
+                <div class="max-w-xl mx-auto">
+                    <!-- UPDATED FORM FOR GOOGLE SHEETS -->
+                    <form id="test-form">
+                        <div class="mb-6">
+                            <label for="name" class="block text-left text-text-muted font-medium mb-2">Votre Nom Complet</label>
+                            <input type="text" id="name" name="name" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="Jean Dupont" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="country" class="block text-left text-text-muted font-medium mb-2">Votre Pays</label>
+                            <input type="text" id="country" name="country" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="France" required>
+                        </div>
+                        <div class="mb-8">
+                            <label for="email" class="block text-left text-text-muted font-medium mb-2">Votre Email</label>
+                            <input type="email" id="email" name="email" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="vous@exemple.com" required>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-10 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-xl shadow-accent-indigo/50">
+                            Envoyer ma demande de test
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="section-bg py-24 px-4 md:px-12">
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-6">Formules Simples. <span class="text-accent-indigo">Sans Engagement.</span></h2>
+            <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">
+                Choisissez la formule qui correspond à vos habitudes et économisez en vous engageant sur la durée.
+            </p>
+
+            <!-- EDIT: Updated grid layout for better cohesion -->
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+                
+                <!-- 3 Months Plan -->
+                <div class="pricing-card card-bg p-8 rounded-xl shadow-2xl border border-gray-700/50 flex flex-col">
+                    <h3 class="text-3xl font-bold mb-1">3 Mois</h3>
+                    <p class="text-accent-indigo font-semibold mb-6">Découverte</p>
+                    <p class="text-5xl font-extrabold mb-1 text-text-light">25€<span class="text-2xl font-normal text-text-muted">/Total</span></p>
+                    <p class="text-sm text-text-muted mb-8">Facturé tous les 3 mois.</p>
+                    
+                    <div class="space-y-5 mb-10 flex-grow">
+                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
+                            <i data-lucide="tv" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
+                            <div>
+                                <span class="text-xl font-bold text-text-light">15 000+</span>
+                                <span class="block text-sm text-text-muted">Chaînes TV en Direct</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
+                            <i data-lucide="film" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
+                            <div>
+                                <span class="text-xl font-bold text-text-light">50 000+</span>
+                                <span class="block text-sm text-text-muted">Films & Séries (VOD)</span>
+                            </div>
+                        </div>
+                        
+                        <hr class="border-gray-700/50 my-5">
+
+                        <ul class="space-y-3 text-text-muted text-sm">
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Guide TV ( EPG )</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Support Client 24/7</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Adult Pack Add-on -->
+                    <div class="mb-4 p-3 rounded-lg border border-gray-600/50 flex items-center justify-between">
+                        <label for="adult-pack-3" class="text-sm font-medium cursor-pointer flex items-center">
+                            Ajouter le Pack Adulte (+5€)
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="adult-pack-3">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <button onclick="handleSubscriptionClick('3 Mois', 'adult-pack-3')" class="w-full cta-button text-text-light font-bold py-3 rounded-lg shadow-md mt-auto">
+                        Choisir cette formule
+                    </button>
+                </div>
+
+                <!-- 6 Months Plan (Featured) -->
+                <div class="pricing-card featured card-bg p-8 rounded-xl shadow-2xl flex flex-col transform md:scale-105">
+                    <div class="flex justify-center mb-4">
+                        <span class="featured-badge">Le Choix Populaire</span>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-1 text-center">6 Mois</h3>
+                    <p class="text-accent-indigo font-semibold mb-6 text-center">Meilleur Rapport Qualité-Prix</p>
+                    <p class="text-6xl font-extrabold mb-1 text-center text-accent-indigo">35€<span class="text-2xl font-normal text-text-muted">/Total</span></p>
+                    <p class="text-sm text-text-muted mb-8 text-center">Facturé tous les 6 mois.</p>
+                    
+                    <div class="space-y-5 mb-10 flex-grow">
+                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
+                            <i data-lucide="tv" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
+                            <div>
+                                <span class="text-xl font-bold text-text-light">15 000+</span>
+                                <span class="block text-sm text-text-muted">Chaînes TV en Direct</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
+                            <i data-lucide="film" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
+                            <div>
+                                <span class="text-xl font-bold text-text-light">50 000+</span>
+                                <span class="block text-sm text-text-muted">Films & Séries (VOD)</span>
+                            </div>
+                        </div>
+                        
+                        <hr class="border-gray-700/50 my-5">
+
+                        <ul class="space-y-3 text-text-muted text-sm">
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Guide TV ( EPG )</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Support Client 24/7</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Adult Pack Add-on -->
+                    <div class="mb-4 p-3 rounded-lg border border-gray-600/50 flex items-center justify-between">
+                        <label for="adult-pack-6" class="text-sm font-medium cursor-pointer flex items-center">
+                            Ajouter le Pack Adulte (+5€)
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="adult-pack-6">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <button onclick="handleSubscriptionClick('6 Mois', 'adult-pack-6')" class="w-full cta-button featured-btn text-text-light font-bold py-3 rounded-lg mt-auto">
+                        Choisir cette formule
+                    </button>
+                </div>
+
+                <!-- 12 Months Plan -->
+                <div class="pricing-card card-bg p-8 rounded-xl shadow-2xl border border-gray-700/50 flex flex-col">
+                    <h3 class="text-3xl font-bold mb-1">12 Mois</h3>
+                    <p class="text-accent-indigo font-semibold mb-6">Meilleure Valeur</p>
+                    <p class="text-6xl font-extrabold mb-1 text-center text-accent-indigo">55€<span class="text-2xl font-normal text-text-muted">/Total</span></p>
+                    <p class="text-sm text-text-muted mb-8 text-center">Facturé annuellement.</p>
+                    
+                    <div class="space-y-5 mb-10 flex-grow">
+                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
+                            <i data-lucide="tv" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
+                            <div>
+                                <span class="text-xl font-bold text-text-light">15 000+</span>
+                                <span class="block text-sm text-text-muted">Chaînes TV en Direct</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
+                            <i data-lucide="film" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
+                            <div>
+                                <span class="text-xl font-bold text-text-light">50 000+</span>
+                                <span class="block text-sm text-text-muted">Films & Séries (VOD)</span>
+                            </div>
+                        </div>
+                        
+                        <hr class="border-gray-700/50 my-5">
+
+                        <ul class="space-y-3 text-text-muted text-sm">
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Guide TV ( EPG )</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Support Client 24/7</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Adult Pack Add-on -->
+                    <div class="mb-4 p-3 rounded-lg border border-gray-600/50 flex items-center justify-between">
+                        <label for="adult-pack-12" class="text-sm font-medium cursor-pointer flex items-center">
+                            Ajouter le Pack Adulte (+5€)
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="adult-pack-12">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <button onclick="handleSubscriptionClick('12 Mois', 'adult-pack-12')" class="w-full cta-button text-text-light font-bold py-3 rounded-lg shadow-md mt-auto">
+                        Choisir cette formule
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW: Contact and More Infos Section -->
+        <section id="contact" class="section-bg py-24 px-4 md:px-12">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-12">
+                    Contactez-nous et <span class="text-accent-indigo">Plus d'Infos</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Contact Card -->
+                    <div class="contact-info-card p-8">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i data-lucide="mail" class="w-6 h-6 text-accent-indigo"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Email</h3>
+                                <p>Nous sommes disponibles pour répondre à toutes vos questions.</p>
+                                <a href="mailto:contactfrancy3@gmail.com" class="email-link">contactfrancy3@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i data-lucide="clock" class="w-6 h-6 text-accent-indigo"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Disponibilité</h3>
+                                <p>Notre équipe de support est disponible 7j/7 et 24h/7 pour vous assister.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- More Infos Card -->
+                    <div class="contact-info-card p-8">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i data-lucide="smartphone" class="w-6 h-6 text-accent-indigo"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Compatibilité</h3>
+                                <p>FrancyHostinger fonctionne sur tous les appareils modernes: Smart TV, Android, iOS, MAG, Fire Stick et plus.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i data-lucide="shield-check" class="w-6 h-6 text-accent-indigo"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Paiement Sécurisé</h3>
+                                <p>Payez en toute sécurité avec PayPal, notre partenaire de confiance pour les transactions en ligne.</p>
+                                <div class="paypal-badge">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png" alt="PayPal" class="paypal-logo">
+                                    <span class="text-white text-sm font-medium">PayPal</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="section-bg pt-16 pb-20 px-4 md:px-12 text-center border-t border-gray-700/50">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Prêt(e) à <span class="text-accent-indigo">améliorer votre expérience ?</span>
+                </h2>
+                <p class="text-xl text-text-muted mb-8">
+                    Annulez à tout moment. Sans frais cachés. Juste du divertissement pur et ininterrompu.
+                </p>
+                <a href="#pricing" class="bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-12 rounded-xl transition duration-300 transform hover:scale-105 shadow-2xl shadow-accent-indigo/50 inline-block">
+                    Voir nos Abonnements
+                </a>
+                
+                <!-- EDIT: Added Payment Method Section -->
+                <div class="mt-12 pt-8 border-t border-gray-700/50">
+                    <p class="text-sm text-text-muted mb-4">Moyens de paiement sécurisés</p>
+                    <div class="flex items-center justify-center space-x-4">
+                        <!-- EDIT: Updated PayPal logo URL to high-res PNG -->
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png" alt="Logo PayPal" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0">
+                    </div>
+                </div>
+
+                <div class="mt-12 text-sm text-text-muted/50">
+                    &copy; 2025 FrancyHostinger. Tous droits réservés.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // --- FINAL and CORRECTED Google Sheets Form Submission Logic ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('test-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    const originalButtonText = submitButton.innerText;
+                    
+                    // Update button UI to show loading state
+                    submitButton.innerText = 'Envoi en cours...';
+                    submitButton.disabled = true;
+
+                    // Your API URL from SheetDB
+                    const apiUrl = 'https://sheetdb.io/api/v1/kxhd20ethvj8z'; 
+
+                    // Manually get the data from each form field
+                    const data = {
+                        name: document.getElementById('name').value,
+                        country: document.getElementById('country').value,
+                        email: document.getElementById('email').value
+                    };
+
+                    // Send the data to your Google Sheet using the SheetDB API
+                    fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        // The data object MUST be wrapped in a "data" object
+                        body: JSON.stringify({
+                            data: data
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        // Check if the API confirms that the row was created
+                        if (result.created) {
+                            showModal('Demande Reçue !', 'Merci ! Votre demande de test a bien été envoyée. Nous vous contacterons très prochainement.');
+                            form.reset(); // Clear the form fields for the next entry
+                        } else {
+                            showModal('Erreur', 'Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showModal('Erreur de Connexion', 'Une erreur de réseau est survenue. Veuillez réessayer.');
+                    })
+                    .finally(() => {
+                        // Restore the button UI in all cases
+                        submitButton.innerText = originalButtonText;
+                        submitButton.disabled = false;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
