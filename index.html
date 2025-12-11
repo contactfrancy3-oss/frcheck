@@ -760,7 +760,7 @@
                 </p>
                 
                 <div class="max-w-xl mx-auto">
-                    <!-- UPDATED FORM FOR GOOGLE SHEETS -->
+                    <!-- FINAL FORM FOR GOOGLE SHEETS -->
                     <form id="test-form">
                         <div class="mb-6">
                             <label for="name" class="block text-left text-text-muted font-medium mb-2">Votre Nom Complet</label>
@@ -1046,6 +1046,7 @@
             const form = document.getElementById('test-form');
             if (form) {
                 form.addEventListener('submit', function(e) {
+                    // Prevent the form from doing a default page reload
                     e.preventDefault();
                     
                     const submitButton = form.querySelector('button[type="submit"]');
@@ -1056,7 +1057,7 @@
                     submitButton.disabled = true;
 
                     // Your API URL from SheetDB
-                    const apiUrl = 'https://sheetdb.io/api/v1/kxhd20ethvj8z'; 
+                    const apiUrl = 'https://sheetdb.io/api/v1/ew5bjcg21y2r9'; 
 
                     // Manually get the data from each form field
                     const data = {
