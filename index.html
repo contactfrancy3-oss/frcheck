@@ -447,19 +447,42 @@
         function closeModal() {
             document.getElementById('custom-modal').classList.add('hidden');
         }
-
+        
+        // --- UPDATED and IMPROVED Subscription Click Handler ---
         function handleSubscriptionClick(planName, adultPackId) {
             const emailAddress = "contactfrancy3@gmail.com";
-            let subject = encodeURIComponent(`Demande d'abonnement FrancyHostinger - Forfait ${planName}`);
-            let body = encodeURIComponent(`Bonjour,\n\nJe suis intéressé(e) par le forfait ${planName} que j'ai vu sur votre site web.\n\nVeuillez me fournir les détails pour finaliser l'abonnement et le paiement.\n\nCordialement,`);
+            let subject = `Demande d'abonnement FrancyHostinger - Forfait ${planName}`;
+            let body = `Bonjour,\n\nJe suis intéressé(e) par le forfait ${planName} que j'ai vu sur votre site web.\n\nVeuillez me fournir les détails pour finaliser l'abonnement et le paiement.\n\nCordialement,`;
 
             const adultPackCheckbox = document.getElementById(adultPackId);
             if (adultPackCheckbox && adultPackCheckbox.checked) {
-                subject = encodeURIComponent(`Demande d'abonnement FrancyHostinger - Forfait ${planName} + Pack Adulte`);
-                body = encodeURIComponent(`Bonjour,\n\nJe suis intéressé(e) par le forfait ${planName} avec le Pack Adulte optionnel que j'ai vu sur votre site web.\n\nVeuillez me fournir les détails pour finaliser l'abonnement et le paiement.\n\nCordialement,`);
+                subject = `Demande d'abonnement FrancyHostinger - Forfait ${planName} + Pack Adulte`;
+                body = `Bonjour,\n\nJe suis intéressé(e) par le forfait ${planName} avec le Pack Adulte optionnel que j'ai vu sur votre site web.\n\nVeuillez me fournir les détails pour finaliser l'abonnement et le paiement.\n\nCordialement,`;
             }
 
-            window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+            // 1. Try to open the mailto link (works for users with a default email client)
+            window.location.href = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            // 2. Show the modal as a fallback and for confirmation
+            showSubscriptionModal(planName, emailAddress);
+        }
+
+        function showSubscriptionModal(planName, emailAddress) {
+            const modal = document.getElementById('subscription-modal');
+            const titleElement = document.getElementById('subscription-modal-title');
+            const messageElement = document.getElementById('subscription-modal-message');
+            const emailLinkElement = document.getElementById('subscription-modal-email');
+
+            titleElement.textContent = `Demande pour le forfait "${planName}"`;
+            messageElement.textContent = "Nous essayons d'ouvrir votre application de messagerie. Si rien ne se passe, veuillez copier l'adresse email ci-dessous et nous contacter directement.";
+            emailLinkElement.textContent = emailAddress;
+            emailLinkElement.href = `mailto:${emailAddress}`;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeSubscriptionModal() {
+            document.getElementById('subscription-modal').classList.add('hidden');
         }
         
         // --- Fonction pour initialiser le Marquee Wide (Films/Séries) ---
@@ -692,6 +715,21 @@
                 <p id="modal-message" class="text-text-muted mb-6"></p>
                 <button onclick="closeModal()" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light font-semibold py-2 rounded-lg transition duration-300">
                     Fermer
+                </button>
+            </div>
+        </div>
+
+        <!-- NEW: Subscription Confirmation Modal -->
+        <div id="subscription-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-card-bg p-6 rounded-xl shadow-2xl max-w-md w-full border border-accent-indigo">
+                <h3 id="subscription-modal-title" class="text-xl font-bold mb-3 text-accent-indigo"></h3>
+                <p id="subscription-modal-message" class="text-text-muted mb-6"></p>
+                <div class="bg-primary-dark/50 p-4 rounded-lg mb-6">
+                    <p class="text-sm text-text-muted mb-1">Envoyez un email à :</p>
+                    <a id="subscription-modal-email" href="mailto:contactfrancy3@gmail.com" class="text-accent-indigo font-semibold text-lg hover:underline"></a>
+                </div>
+                <button onclick="closeSubscriptionModal()" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light font-semibold py-2 rounded-lg transition duration-300">
+                    J'ai compris
                 </button>
             </div>
         </div>
