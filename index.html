@@ -259,7 +259,7 @@
             background-color: #4f46e5;
         }
 
-        /* --- MAJOR FIX: NAVIGATION BAR STYLES --- */
+        /* --- FINAL FIX: NAVIGATION BAR STYLES --- */
         .navbar {
             position: fixed;
             top: 0;
@@ -275,20 +275,20 @@
         /* Main container for navbar content */
         .nav-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center; /* Vertically centered by default */
+            justify-content: flex-end; /* Aligns items to the right */
+            align-items: center;
             height: 100%;
             width: 100%;
-            /* --- FINAL FIX: Move logo to the far left --- */
-            padding-left: 0;    /* <-- CHANGE: Removes left padding */
-            padding-right: 20px; /* <-- CHANGE: Keeps right side padded */
+            padding: 0 20px; /* Padding on right only */
         }
 
-        /* Logo container is now part of the flex flow */
+        /* Logo is now absolutely positioned in the top-left */
         .logo-container {
-            display: flex;
-            align-items: center;
-            padding-left: 20px; /* Adds a small, clean space from the absolute edge */
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%); /* Vertically centers the logo */
+            z-index: 100;
         }
 
         #main-logo {
@@ -321,7 +321,7 @@
         
         /* --- REFINEMENT: MOBILE SPECIFIC STYLES --- */
         @media (max-width: 767px) {
-            /* Align items to the top on mobile for more space */
+            /* Align items to top on mobile for more space */
             .nav-container {
                 align-items: flex-start;
                 padding-top: 1rem; /* Add some space from the top edge */
@@ -693,19 +693,19 @@
 
     <div class="content-wrapper">
 
-        <!-- MAJOR FIX: RESTRUCTURED NAVIGATION -->
+        <!-- FINAL FIX: RESTRUCTURED NAVIGATION -->
         <nav class="navbar">
-            <div class="nav-container">
-                <!-- Logo on the far left -->
-                <a href="#hero" class="logo-container">
-                    <img id="main-logo"
-                         src="FRANCY.png" 
-                         alt="FrancyHostinger Logo" 
-                         onerror="this.onerror=null; this.src='https://placehold.co/150x40/4f46e5/ffffff?text=FHostinger';"
-                         class="transition duration-300 transform hover:scale-105">
-                </a>
+            <!-- Logo is now positioned absolutely in the top-left corner -->
+            <a href="#hero" class="logo-container">
+                <img id="main-logo"
+                     src="FRANCY.png" 
+                     alt="FrancyHostinger Logo" 
+                     onerror="this.onerror=null; this.src='https://placehold.co/150x40/4f46e5/ffffff?text=FHostinger';"
+                     class="transition duration-300 transform hover:scale-105">
+            </a>
 
-                <!-- Nav links and button on the right -->
+            <!-- Nav links and button are in a separate container on the right -->
+            <div class="nav-container">
                 <div class="nav-links-container">
                     <div class="nav-links text-text-muted font-medium">
                         <a href="#hero" class="hover:text-accent-indigo transition duration-300">Accueil</a>
