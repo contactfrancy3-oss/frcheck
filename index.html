@@ -259,39 +259,21 @@
             background-color: #4f46e5;
         }
 
-        /* EDIT: Logo styles inspired by dinoiptv.com */
-        #main-logo {
-            background-color: transparent !important; 
-            box-shadow: none !important;
-            filter: drop-shadow(0 0 0 transparent) !important;
-            max-height: 60px; /* Increased height for better visibility */
-            width: auto; /* Maintain aspect ratio */
-        }
-        
-        .logo-container {
-            background-color: transparent !important;
-            box-shadow: none !important;
-            padding: 0 !important;
-            border-radius: 0 !important;
-            display: flex;
-            align-items: center;
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-        }
-        
-        /* Navigation bar adjustments */
+        /* --- MAJOR FIX: NAVIGATION BAR STYLES --- */
         .navbar {
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
             height: 80px;
             background: linear-gradient(to right, rgba(13, 17, 23, 0.95), rgba(13, 17, 23, 0.85));
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        .nav-content {
+
+        /* New main container for the navbar content */
+        .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -299,13 +281,39 @@
             width: 100%;
             padding: 0 20px;
         }
+
+        /* Logo container is now part of the flex flow */
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        #main-logo {
+            background-color: transparent !important; 
+            box-shadow: none !important;
+            filter: drop-shadow(0 0 0 transparent) !important;
+            max-height: 60px;
+            width: auto;
+            transition: duration-300 transform hover:scale-105;
+        }
+        
+        /* Container for nav links and mobile button */
+        .nav-links-container {
+            display: flex;
+            align-items: center;
+        }
         
         .nav-links {
-            display: flex;
-            justify-content: flex-end;
+            display: none; /* Hidden by default */
             align-items: center;
             gap: 2rem;
-            margin-left: auto;
+        }
+
+        /* Show nav links on medium screens and up */
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
         }
         
         /* Contact and More Infos Section Styles */
@@ -673,33 +681,36 @@
 
     <div class="content-wrapper">
 
-        <!-- EDIT: Navigation inspired by dinoiptv.com -->
-        <nav class="navbar fixed top-0 left-0 right-0 z-50">
-            <!-- Logo positioned in maximum left corner -->
-            <a href="#hero" class="logo-container">
-                <img id="main-logo"
-                     src="FRANCY.png" 
-                     alt="FrancyHostinger Logo" 
-                     onerror="this.onerror=null; this.src='https://placehold.co/150x40/4f46e5/ffffff?text=FHostinger';"
-                     class="transition duration-300 transform hover:scale-105">
-            </a>
+        <!-- MAJOR FIX: RESTRUCTURED NAVIGATION -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <!-- Logo on the left -->
+                <a href="#hero" class="logo-container">
+                    <img id="main-logo"
+                         src="FRANCY.png" 
+                         alt="FrancyHostinger Logo" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/150x40/4f46e5/ffffff?text=FHostinger';"
+                         class="transition duration-300 transform hover:scale-105">
+                </a>
 
-            <!-- Navigation links positioned on the right -->
-            <div class="nav-content">
-                <div class="nav-links hidden md:flex items-center space-x-8 text-text-muted font-medium">
-                    <a href="#hero" class="hover:text-accent-indigo transition duration-300">Accueil</a>
-                    <a href="#content" class="hover:text-accent-indigo transition duration-300">Catalogue</a>
-                    <a href="#test-iptv" class="hover:text-accent-indigo transition duration-300">Test IPTV</a>
-                    <a href="#pricing" class="hover:text-accent-indigo transition duration-300">Tarifs</a>
+                <!-- Nav links and button on the right -->
+                <div class="nav-links-container">
+                    <div class="nav-links text-text-muted font-medium">
+                        <a href="#hero" class="hover:text-accent-indigo transition duration-300">Accueil</a>
+                        <a href="#content" class="hover:text-accent-indigo transition duration-300">Catalogue</a>
+                        <a href="#test-iptv" class="hover:text-accent-indigo transition duration-300">Test IPTV</a>
+                        <a href="#pricing" class="hover:text-accent-indigo transition duration-300">Tarifs</a>
+                    </div>
+
+                    <!-- Mobile menu button on the right -->
+                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-text-light hover:bg-gray-700 transition duration-300" aria-label="Menu">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
                 </div>
-
-                <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-text-light hover:bg-gray-700 transition duration-300" aria-label="Menu">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
             </div>
         </nav>
         
-        <!-- FIXED: Mobile Menu with proper positioning and z-index -->
+        <!-- Mobile Menu Overlay -->
         <div id="mobile-menu" class="fixed top-0 left-0 right-0 w-full h-full bg-black bg-opacity-95 z-50 hidden">
             <nav class="flex flex-col items-center justify-center h-full p-4">
                 <a href="#hero" class="block py-3 px-3 text-text-muted hover:text-accent-indigo hover:bg-gray-800 rounded-md transition duration-300">Accueil</a>
