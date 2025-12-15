@@ -279,13 +279,16 @@
             align-items: center; /* Vertically centered by default */
             height: 100%;
             width: 100%;
-            padding: 0 20px;
+            /* --- FINAL FIX: Move logo to the far left --- */
+            padding-left: 0;    /* <-- CHANGE: Removes left padding */
+            padding-right: 20px; /* <-- CHANGE: Keeps right side padded */
         }
 
         /* Logo container is now part of the flex flow */
         .logo-container {
             display: flex;
             align-items: center;
+            padding-left: 20px; /* Adds a small, clean space from the absolute edge */
         }
 
         #main-logo {
@@ -693,7 +696,7 @@
         <!-- MAJOR FIX: RESTRUCTURED NAVIGATION -->
         <nav class="navbar">
             <div class="nav-container">
-                <!-- Logo on the left -->
+                <!-- Logo on the far left -->
                 <a href="#hero" class="logo-container">
                     <img id="main-logo"
                          src="FRANCY.png" 
