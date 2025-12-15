@@ -279,25 +279,31 @@
             align-items: center;
             height: 100%;
             width: 100%;
-            padding: 0 20px; /* Padding on right only */
+            /* --- FINAL FIX: Create space for logo --- */
+            padding-left: 220px; /* This creates the space for the logo */
         }
 
         /* Logo is now absolutely positioned in the top-left corner */
         .logo-container {
             position: absolute;
-            top: 50%;
-            left: 20px;
+            top: 0; /* Aligns to the very top */
+            left: 0; /* Aligns to the very left */
             transform: translateY(-50%); /* Vertically centers the logo */
             z-index: 100;
+            /* --- FINAL FIX: Constrain logo size and fit --- */
+            max-height: 80px; /* Constrain to navbar height */
+            max-width: 200px; /* Prevents it from being too large */
         }
 
         #main-logo {
             background-color: transparent !important; 
             box-shadow: none !important;
             filter: drop-shadow(0 0 0 transparent) !important;
-            max-height: 60px;
-            width: auto;
-            transition: duration-300 transform hover:scale-105;
+            /* --- FINAL FIX: Ensure logo fits and scales --- */
+            max-height: 100%; /* Use full height of container */
+            max-width: 100%; /* Use full width of container */
+            width: auto; /* Let height control the width to maintain aspect ratio */
+            object-fit: contain; /* Ensures the whole logo is visible and scales correctly */
         }
         
         /* Container for nav links and mobile button */
