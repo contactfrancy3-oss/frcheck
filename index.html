@@ -155,7 +155,7 @@
             object-fit: cover; 
         }
 
-        /* --- CREATIVE & PROFESSIONAL PRICING CARD STYLES --- */
+        /* ===== CREATIVE & PROFESSIONAL PRICING CARD STYLES ===== */
         .pricing-card {
             opacity: 0;
             transform: translateY(20px);
@@ -223,7 +223,7 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); }
+            0% { box-shadow: 0 0 0 0 0 rgba(168, 85, 247, 0.7); }
             70% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
             100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
         }
@@ -301,7 +301,7 @@
         #main-logo {
             background-color: transparent !important; 
             box-shadow: none !important;
-            filter: drop-shadow(0 0 0 transparent) !important;
+            filter: drop-shadow(0 0 0 0 transparent) !important;
             /* --- FINAL FIX: Ensure logo fits and scales --- */
             max-height: 60px; /* Constrain to navbar height */
             width: auto; /* Let height control the width to maintain aspect ratio */
@@ -428,7 +428,8 @@
                 background-color: rgba(79, 70, 229, 0.8);
             }
         }
-
+        }
+        
         /* Contact and More Infos Section Styles */
         .contact-info-card {
             background: linear-gradient(145deg, rgba(31, 41, 55, 0.9), rgba(79, 70, 229, 0.1));
@@ -771,7 +772,7 @@
 
             track.addEventListener('touchmove', (e) => {
                 if (!isDown) return;
-                const x = e.touches[0].pageX;
+                const x = e.touches[0].pageX - startX;
                 const walk = (x - startX) * 2;
                 scrollLeft -= walk;
                 track.style.transform = `translateX(${scrollLeft}px)`;
@@ -899,7 +900,7 @@
             </div>
         </nav>
         
-        <!-- NEW: SLIDE-OUT MOBILE MENU -->
+        <!-- Mobile Menu Overlay -->
         <div id="mobile-side-menu">
             <button id="mobile-menu-close-btn" class="mobile-menu-close-btn" aria-label="Close Menu">
                 <i data-lucide="x" class="w-6 h-6"></i>
@@ -929,6 +930,7 @@
                 <div class="bg-primary-dark/50 p-4 rounded-lg mb-6">
                     <p class="text-sm text-text-muted mb-1">Envoyez un email à :</p>
                     <a id="subscription-modal-email" href="mailto:contactfrancy3@gmail.com" class="text-accent-indigo font-semibold text-lg hover:underline"></a>
+                </div>
                 </div>
                 <button onclick="closeSubscriptionModal()" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light font-semibold py-2 rounded-lg transition duration-300">
                     J'ai compris
@@ -1033,7 +1035,7 @@
                             <input type="email" id="email" name="email" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="vous@exemple.com" required>
                         </div>
                         
-                        <button type="submit" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-10 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-xl shadow-accent-indigo/50">
+                        <button type="submit" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-10 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-xl shadow-xl shadow-accent-indigo/50">
                             Envoyer ma demande de test
                         </button>
                     </form>
@@ -1048,7 +1050,7 @@
             </p>
 
             <!-- EDIT: Updated grid layout for better cohesion -->
-            <div class="max-w-6xl mx-auto grid grid grid-cols-1 md: <div class="md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            <div class="max-w-6xl mx-auto grid grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                 
                 <!-- 3 Months Plan -->
                 <div class="pricing-card card-bg p-8 rounded-xl shadow-2xl border border-gray-700/50 flex flex-col">
@@ -1077,7 +1079,7 @@
 
                         <ul class="space-y-3 text-text-muted text-sm">
                             <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Guide TV ( EPG )</li>
+                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Guide TV ( EPG )</li>
                             <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li>
                             <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li>
                             <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li>
@@ -1092,7 +1094,8 @@
                         </label>
                         <label class="toggle-switch">
                             <input type="checkbox" id="adult-pack-3">
-                            <span class="toggle-slider"></span>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </label>
                     </div>
 
@@ -1146,7 +1149,8 @@
                         </label>
                         <label class="toggle-switch">
                             <input type="checkbox" id="adult-pack-6">
-                            <span class="toggle-slider"></span>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </label>
                     </div>
 
@@ -1158,7 +1162,7 @@
                 <!-- 12 Months Plan -->
                 <div class="pricing-card card-bg p-8 rounded-xl shadow-2xl border border-gray-700/50 flex flex-col">
                     <h3 class="text-3xl font-bold mb-1">12 Mois</h3>
-                    <p class="text-accent-indigo font-semibold mb-6">Meilleure Valeur</p>
+                    <p class="text-accent-indigo font-semibold mb-6 text-center">Meilleure Valeur</p>
                     <p class="text-6xl font-extrabold mb-1 text-center text-accent-indigo">55€<span class="text-2xl font-normal text-text-muted">/Total</span></p>
                     <p class="text-sm text-text-muted mb-8 text-center">Facturé annuellement.</p>
                     
@@ -1197,7 +1201,8 @@
                         </label>
                         <label class="toggle-switch">
                             <input type="checkbox" id="adult-pack-12">
-                            <span class="toggle-slider"></span>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </label>
                     </div>
 
@@ -1215,7 +1220,7 @@
                     Contactez-nous et <span class="text-accent-indigo">Plus d'Infos</span>
                 </h2>
                 
-                <div class="grid grid grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="grid grid grid grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Contact Card -->
                     <div class="contact-info-card p-8">
                         <div class="info-item">
@@ -1260,7 +1265,7 @@
                                 <h3>Paiement Sécurisé</h3>
                                 <p>Payez en toute sécurité avec PayPal, notre partenaire de confiance pour les transactions en ligne.</p>
                                 <div class="paypal-badge">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png" alt="PayPal" class="paypal-logo">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg" alt="PayPal" class="paypal-logo">
                                     <span class="text-white text-sm font-medium">PayPal</span>
                                 </div>
                             </div>
@@ -1278,7 +1283,7 @@
                 <p class="text-xl text-text-muted mb-8">
                     Annulez à tout moment. Sans frais cachés. Juste du divertissement pur et ininterrompu.
                 </p>
-                <a href="#pricing" class="bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-12 rounded-xl transition duration-300 transform hover:scale-105 shadow-2xl shadow-accent-indigo/50 inline-block">
+                <a href="#pricing" class="bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-12 rounded-xl transition duration-300 transform hover:scale-105 shadow-2xl shadow-2xl shadow-accent-indigo/50 inline-block">
                     Voir nos Abonnements
                 </a>
                 
@@ -1287,7 +1292,7 @@
                     <p class="text-sm text-text-muted mb-4">Moyens de paiement sécurisés</p>
                     <div class="flex items-center justify-center space-x-4">
                         <!-- EDIT: Updated PayPal logo URL to high-res PNG -->
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png" alt="Logo PayPal" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg" alt="Logo PayPal" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0">
                     </div>
                 </div>
 
@@ -1358,5 +1363,6 @@
             }
         });
     </script>
+</script>
 </body>
 </html>
