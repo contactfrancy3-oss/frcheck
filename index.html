@@ -270,6 +270,8 @@
             background: linear-gradient(to right, rgba(13, 17, 23, 0.95), rgba(13, 17, 23, 0.85));
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            /* --- FINAL FIX: Apply padding directly to navbar, not container --- */
+            padding: 0 20px; /* This gives space for the logo and menu */
         }
 
         /* Main container for navbar content */
@@ -279,20 +281,15 @@
             align-items: center;
             height: 100%;
             width: 100%;
-            /* --- FINAL FIX: Create space for logo --- */
-            padding-left: 220px; /* This creates the space for the logo */
         }
 
         /* Logo is now absolutely positioned in the top-left corner */
         .logo-container {
             position: absolute;
-            top: 0; /* Aligns to the very top */
-            left: 0; /* Aligns to the very left */
+            top: 50%;
+            left: 20px;
             transform: translateY(-50%); /* Vertically centers the logo */
             z-index: 100;
-            /* --- FINAL FIX: Constrain logo size and fit --- */
-            max-height: 80px; /* Constrain to navbar height */
-            max-width: 200px; /* Prevents it from being too large */
         }
 
         #main-logo {
@@ -300,8 +297,7 @@
             box-shadow: none !important;
             filter: drop-shadow(0 0 0 transparent) !important;
             /* --- FINAL FIX: Ensure logo fits and scales --- */
-            max-height: 100%; /* Use full height of container */
-            max-width: 100%; /* Use full width of container */
+            max-height: 60px; /* Constrain to navbar height */
             width: auto; /* Let height control the width to maintain aspect ratio */
             object-fit: contain; /* Ensures the whole logo is visible and scales correctly */
         }
@@ -1025,7 +1021,7 @@
                     Contactez-nous et <span class="text-accent-indigo">Plus d'Infos</span>
                 </h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="grid grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Contact Card -->
                     <div class="contact-info-card p-8">
                         <div class="info-item">
