@@ -54,7 +54,7 @@
             box-shadow: 0 15px 30px rgba(79, 70, 229, 0.7);
         }
         
-        /* CORRECTED: The carousel container now relies on JavaScript for animation, not CSS */
+        /* --- CORRECTED: Carousel Styles --- */
         .pro-motion-container {
             position: relative;
             width: 100%;
@@ -63,7 +63,6 @@
             mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
         }
 
-        /* CORRECTED: The track is now a standard, natively-scrollable element */
         .pro-motion-track {
             display: flex;
             cursor: grab;
@@ -78,7 +77,7 @@
             display: none; /* Chrome, Safari and Opera */
         }
         
-        /* CORRECTED: Added for mobile scroll-snap for a better UX */
+        /* --- CORRECTED: Added for mobile scroll-snap for a better UX --- */
         @media (max-width: 1023px) {
             .pro-motion-track {
                 scroll-snap-type: x mandatory;
@@ -89,7 +88,7 @@
             }
         }
 
-        /* CORRECTED: Styles for desktop navigation buttons */
+        /* --- CORRECTED: Styles for desktop navigation buttons --- */
         .nav-button {
             position: absolute;
             top: 50%;
@@ -124,6 +123,15 @@
         }
         .nav-button.next {
             right: 10px;
+        }
+        
+        /* --- CORRECTED: RE-ADDED CSS animation for the third carousel --- */
+        @keyframes horizontal-scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
+        }
+        .css-animated-track {
+            animation: horizontal-scroll-left 10s linear infinite;
         }
         
         /* --- STYLE DES ÉLÉMENTS LARGES (Movies & Series) --- */
@@ -587,7 +595,7 @@
             document.getElementById('subscription-modal').classList.add('hidden');
         }
         
-        // --- FINAL CORRECTED: Robust and Simple carousel logic ---
+        // --- FINAL CORRECTED: Robust and Simple carousel logic for the first two carousels ---
         function initializeCarousel(trackId, items, durationSeconds) {
             const track = document.getElementById(trackId);
             if (!track) return;
@@ -644,7 +652,7 @@
                 // Reset speed after a delay
                 setTimeout(() => {
                     currentSpeed = baseSpeed;
-                }, 2000); // Boost for 2 seconds
+                }, 2500); // Boost for 2.5 seconds
             };
 
             if (prevBtn) prevBtn.addEventListener('click', () => {
@@ -674,6 +682,35 @@
             });
         }
 
+        // --- RE-ADDED: Original CSS-based logic for the third carousel ---
+        function initializeChannelMarquee(trackId, logos, speedSeconds) {
+            const track = document.getElementById(trackId);
+            if (!track) return;
+            
+            const itemWidth = 180 + 24; // item width + margin
+            const totalItemsInTrack = logos.length * 2;
+            const totalWidth = itemWidth * totalItemsInTrack;
+
+            // Set width and animation duration for the CSS animation
+            track.style.width = `${totalWidth}px`;
+            track.style.animation = `horizontal-scroll-left ${speedSeconds}s linear infinite`;
+
+            const generateItem = (logo) => {
+                return `
+                    <div class="square-channel-item">
+                        <img src="${logo.img}" 
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='https://placehold.co/180x180/324C9E/F7F8FB/png?text=Logo';" 
+                             alt="Logo de la ${logo.title}" 
+                             class="w-full h-full object-cover">
+                    </div>
+                `;
+            };
+
+            const duplicatedLogos = [...logos, ...logos];
+            track.innerHTML = duplicatedLogos.map(generateItem).join('');
+        }
+
         // --- Refactored initialization functions to use the new generic carousel logic ---
         function initializeWideMarquee(trackId, posters, durationSeconds) {
             const items = posters.map(poster => ({
@@ -701,18 +738,6 @@
             });
             initializeCarousel(trackId, items, durationSeconds);
         }
-
-        function initializeChannelMarquee(trackId, logos, durationSeconds) {
-            const items = logos.map(logo => ({
-                img: logo.img,
-                alt: `Logo de la ${logo.title}`,
-                class: 'square-channel-item',
-                objectFit: 'object-cover',
-                width: 180, // For placeholder
-                height: 180 // For placeholder
-            }));
-            initializeCarousel(trackId, items, durationSeconds);
-        }
         
         // --- Intersection Observer for fade-in animations ---
         const observerOptions = {
@@ -737,7 +762,8 @@
             // Initialize carousels with the final, correct logic
             initializeWideMarquee('movies-marquee-track', moviePosters, 30); 
             initializeVerticalMarquee('sports-marquee-track', sportPosters, 50); 
-            initializeChannelMarquee('channels-marquee-track', channelLogos, 10); 
+            // The third carousel now uses its own original function
+            initializeChannelMarquee('channels-marquee-track', channelLogos, 10);
 
             // Observe all pricing cards for animation
             document.querySelectorAll('.pricing-card').forEach(card => {
@@ -858,7 +884,7 @@
                 <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">Accès instantané à des milliers de chaînes du monde entier, 24h/24 et 7j/7.</p>
 
                 <div class="pro-motion-container">
-                    <div id="channels-marquee-track" class="pro-motion-track"></div>
+                    <div id="channels-marquee-track" class="pro-motion-track css-animated-track"></div>
                 </div>
             </div>
         </section>
