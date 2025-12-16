@@ -79,6 +79,12 @@
             /* Animation duration is set dynamically in JS */
             animation: horizontal-scroll-left 30s linear infinite; 
             will-change: transform;
+            cursor: grab; /* Indicate draggable content */
+        }
+        
+        .pro-motion-container.dragging .pro-motion-track {
+            cursor: grabbing; /* Change cursor when dragging */
+            transition: none; /* Disable transitions during drag */
         }
         
         /* --- STYLE DES ÉLÉMENTS LARGES (Movies & Series) --- */
@@ -149,7 +155,7 @@
             object-fit: cover; 
         }
 
-        /* ===== CREATIVE & PROFESSIONAL PRICING CARD STYLES ===== */
+        /* --- CREATIVE & PROFESSIONAL PRICING CARD STYLES --- */
         .pricing-card {
             opacity: 0;
             transform: translateY(20px);
@@ -388,6 +394,41 @@
             padding: 5px;
         }
         
+        /* --- NEW: MANUAL SCROLL BUTTONS --- */
+        .scroll-button-container {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none; /* Hidden by default, visible on larger screens */
+            z-index: 10;
+        }
+
+        @media (min-width: 1024px) {
+            .scroll-button-container {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                padding: 0 2rem;
+                pointer-events: none; /* Allow clicks to pass through to the track */
+            }
+            .scroll-button {
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+            .scroll-button:hover {
+                background-color: rgba(79, 70, 229, 0.8);
+            }
+        }
+
         /* Contact and More Infos Section Styles */
         .contact-info-card {
             background: linear-gradient(145deg, rgba(31, 41, 55, 0.9), rgba(79, 70, 229, 0.1));
@@ -592,19 +633,58 @@
             const duplicatedPosters = [...posters, ...posters]; 
             track.innerHTML = duplicatedPosters.map(generateItem).join('');
             
-            // NEW APPROACH: Add event listeners to container
-            const container = track.parentElement;
-            
-            // Pause on mouseenter
-            container.addEventListener('mouseenter', () => {
-                console.log('Mouse entered movies container');
+            // NEW: Add manual drag scroll logic
+            let isDown = false;
+            let startX;
+            let scrollLeft = 0;
+
+            // Mouse events
+            track.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - scrollLeft;
+                track.style.animationPlayState = 'paused';
+                track.style.cursor = 'grabbing';
+                track.style.userSelect = 'none'; // Prevent text selection while dragging
+            });
+
+            track.addEventListener('mouseleave', () => {
+                if (isDown) {
+                    isDown = false;
+                    track.style.cursor = 'grab';
+                    track.style.userSelect = 'auto';
+                    track.style.animationPlayState = 'running';
+                }
+            });
+
+            track.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX;
+                const walk = (x - startX) * 2; // For a faster scroll effect
+                scrollLeft -= walk;
+                track.style.transform = `translateX(${scrollLeft}px)`;
+            });
+
+            // Touch events
+            track.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - scrollLeft;
                 track.style.animationPlayState = 'paused';
             });
-            
-            // Resume on mouseleave
-            container.addEventListener('mouseleave', () => {
-                console.log('Mouse left movies container');
-                track.style.animationPlayState = 'running';
+
+            track.addEventListener('touchend', () => {
+                if (isDown) {
+                    isDown = false;
+                    track.style.animationPlayState = 'running';
+                }
+            });
+
+            track.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                const x = e.touches[0].pageX;
+                const walk = (x - startX) * 2;
+                scrollLeft -= walk;
+                track.style.transform = `translateX(${scrollLeft}px)`;
             });
         }
 
@@ -643,19 +723,58 @@
             const duplicatedPosters = [...posters, ...posters]; 
             track.innerHTML = duplicatedPosters.map(generateItem).join('');
             
-            // NEW APPROACH: Add event listeners to container
-            const container = track.parentElement;
-            
-            // Pause on mouseenter
-            container.addEventListener('mouseenter', () => {
-                console.log('Mouse entered sports container');
+            // NEW: Add manual drag scroll logic
+            let isDown = false;
+            let startX;
+            let scrollLeft = 0;
+
+            // Mouse events
+            track.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - scrollLeft;
+                track.style.animationPlayState = 'paused';
+                track.style.cursor = 'grabbing';
+                track.style.userSelect = 'none'; // Prevent text selection while dragging
+            });
+
+            track.addEventListener('mouseleave', () => {
+                if (isDown) {
+                    isDown = false;
+                    track.style.cursor = 'grab';
+                    track.style.userSelect = 'auto';
+                    track.style.animationPlayState = 'running';
+                }
+            });
+
+            track.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX;
+                const walk = (x - startX) * 2;
+                scrollLeft -= walk;
+                track.style.transform = `translateX(${scrollLeft}px)`;
+            });
+
+            // Touch events
+            track.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - scrollLeft;
                 track.style.animationPlayState = 'paused';
             });
-            
-            // Resume on mouseleave
-            container.addEventListener('mouseleave', () => {
-                console.log('Mouse left sports container');
-                track.style.animationPlayState = 'running';
+
+            track.addEventListener('touchend', () => {
+                if (isDown) {
+                    isDown = false;
+                    track.style.animationPlayState = 'running';
+                }
+            });
+
+            track.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                const x = e.touches[0].pageX;
+                const walk = (x - startX) * 2;
+                scrollLeft -= walk;
+                track.style.transform = `translateX(${scrollLeft}px)`;
             });
         }
 
@@ -708,7 +827,8 @@
 
             initializeWideMarquee('movies-marquee-track', moviePosters, 30); 
             initializeVerticalMarquee('sports-marquee-track', sportPosters, 50); 
-            initializeChannelMarquee('channels-marquee-track', channelLogos, 80);
+            // EDIT: Changed speed from 40s to 10s for a much faster animation
+            initializeChannelMarquee('channels-marquee-track', channelLogos, 10); 
 
             // Observe all pricing cards for animation
             document.querySelectorAll('.pricing-card').forEach(card => {
@@ -842,7 +962,16 @@
                     Explorez des films 4K HDR, des séries acclamées et des originaux introuvables ailleurs.
                 </p>
                 
-                <div class="pro-motion-container">
+                <div class="pro-motion-container relative">
+                    <!-- NEW: Added scroll buttons -->
+                    <div class="scroll-button-container">
+                        <button class="scroll-button" onclick="scrollTrack('movies-marquee-track', -300)">
+                            <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                        </button>
+                        <button class="scroll-button" onclick="scrollTrack('movies-marquee-track', 300)">
+                            <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                        </button>
+                    </div>
                     <div id="movies-marquee-track" class="pro-motion-track">
                         </div>
                 </div>
@@ -853,7 +982,16 @@
                     Ne manquez jamais un match. De la ligue de football aux événements mondiaux, vivez l'action en direct.
                 </p>
 
-                <div class="pro-motion-container">
+                <div class="pro-motion-container relative">
+                    <!-- NEW: Added scroll buttons -->
+                    <div class="scroll-button-container">
+                        <button class="scroll-button" onclick="scrollTrack('sports-marquee-track', -300)">
+                            <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                        </button>
+                        <button class="scroll-button" onclick="scrollTrack('sports-marquee-track', 300)">
+                            <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                        </button>
+                    </div>
                     <div id="sports-marquee-track" class="pro-motion-track">
                         </div>
                 </div>
@@ -910,7 +1048,7 @@
             </p>
 
             <!-- EDIT: Updated grid layout for better cohesion -->
-            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            <div class="max-w-6xl mx-auto grid grid grid-cols-1 md: <div class="md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                 
                 <!-- 3 Months Plan -->
                 <div class="pricing-card card-bg p-8 rounded-xl shadow-2xl border border-gray-700/50 flex flex-col">
@@ -1077,7 +1215,7 @@
                     Contactez-nous et <span class="text-accent-indigo">Plus d'Infos</span>
                 </h2>
                 
-                <div class="grid grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="grid grid grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Contact Card -->
                     <div class="contact-info-card p-8">
                         <div class="info-item">
