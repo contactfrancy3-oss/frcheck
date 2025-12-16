@@ -328,6 +328,18 @@
                 align-items: flex-start;
                 padding-top: 1rem; /* Add some space from the top edge */
             }
+            
+            /* --- NEW FIX: Logo adjustments for mobile --- */
+            .logo-container {
+                /* Optional: Move the logo slightly closer to the edge for more space */
+                left: 15px; 
+            }
+
+            #main-logo {
+                /* Make the logo smaller on mobile to prevent it from taking up too much space */
+                max-height: 45px; /* Reduced from 60px */
+                width: auto;
+            }
         }
         
         /* Contact and More Infos Section Styles */
