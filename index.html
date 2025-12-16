@@ -12,18 +12,14 @@
         /* --- STYLE GLOBAL DE FOND (Nightwatch Style) --- */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0d1117; /* Deep charcoal - Fallback */
-            color: #E5E7EB; /* Light gray text */
-            
-            /* L'IMAGE DE FOND EST DÉFINIE ICI ET COUVRE TOUT */
-            /* EDIT: Make sure to host this image yourself as discussed previously */
+            background-color: #0d1117;
+            color: #E5E7EB;
             background-image: url('https://i.pinimg.com/1200x/42/82/2c/42822cb84150a8061415684a8a4b3641.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Parallax effect pour toute la page */
+            background-attachment: fixed;
         }
         
-        /* Dark Overlay for Text Readability (70% black) */
         .page-overlay {
             position: fixed; 
             top: 0;
@@ -55,43 +51,34 @@
             flex-shrink: 0;
         }
         .poster-card:hover {
-            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.7); /* Subtle indigo glow */
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.7);
         }
         
-        /* ===== STYLE "INFINITE SCROLL HORIZONTAL" (Marquee Animation) ===== */
-        /* CORRECTED: This CSS animation is now used again as the primary driver. */
-        @keyframes horizontal-scroll-left {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } 
-        }
-
+        /* CORRECTED: The carousel container now relies on JavaScript for animation, not CSS */
         .pro-motion-container {
             position: relative;
             width: 100%;
             overflow: hidden; 
-            /* Masking for fade effect on sides */
             -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
             mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
         }
 
-        /* CORRECTED: The track now uses the CSS animation again. */
+        /* CORRECTED: The track is now a standard, natively-scrollable element */
         .pro-motion-track {
             display: flex;
-            /* Animation is set by JS */
-            cursor: grab; /* Indicate draggable content */
-            /* MODIFICATION: Added for mobile touch scrolling and desktop behavior */
-            overflow-x: auto; 
+            cursor: grab;
+            overflow-x: auto; /* Enable horizontal scrolling */
             overflow-y: hidden;
+            scroll-behavior: smooth; /* Smooth scrolling for button clicks */
             scrollbar-width: none; /* Firefox */
             -ms-overflow-style: none; /* IE and Edge */
-            scroll-behavior: smooth; /* Smooth scrolling for button clicks */
         }
         
         .pro-motion-track::-webkit-scrollbar {
             display: none; /* Chrome, Safari and Opera */
         }
         
-        /* MODIFICATION: Added for mobile scroll-snap */
+        /* CORRECTED: Added for mobile scroll-snap for a better UX */
         @media (max-width: 1023px) {
             .pro-motion-track {
                 scroll-snap-type: x mandatory;
@@ -102,7 +89,7 @@
             }
         }
 
-        /* MODIFICATION: Added styles for desktop navigation buttons */
+        /* CORRECTED: Styles for desktop navigation buttons */
         .nav-button {
             position: absolute;
             top: 50%;
@@ -142,14 +129,13 @@
         /* --- STYLE DES ÉLÉMENTS LARGES (Movies & Series) --- */
         .wide-poster-item {
             flex-shrink: 0;
-            width: 500px; /* Wide width for landscape posters */
-            aspect-ratio: 16/9; /* Standard landscape aspect ratio */
+            width: 500px;
+            aspect-ratio: 16/9;
             margin-right: 24px; 
             border-radius: 0.75rem; 
             overflow: hidden;
             background-color: #1f2937; 
             border: 1px solid rgba(107, 114, 128, 0.5); 
-            /* FIXED: Enable pointer events for hover functionality */
             pointer-events: auto;
             cursor: pointer; 
             transition: transform 0.3s, box-shadow 0.3s;
@@ -163,14 +149,13 @@
         /* --- STYLE DES ÉLÉMENTS VERTICAUX (Sport) --- */
         .vertical-poster-item {
             flex-shrink: 0;
-            width: 200px; /* Fixed width for portrait posters */
-            aspect-ratio: 2/3; /* Standard portrait poster ratio */
+            width: 200px;
+            aspect-ratio: 2/3;
             margin-right: 24px; 
             border-radius: 0.75rem; 
             overflow: hidden;
             background-color: #1f2937; 
             border: 1px solid rgba(107, 114, 128, 0.5); 
-            /* FIXED: Enable pointer events for hover functionality */
             pointer-events: auto;
             cursor: pointer; 
             transition: transform 0.3s, box-shadow 0.3s;
@@ -219,7 +204,6 @@
             transform: translateY(0);
         }
 
-        /* EDIT: Made hover effect more subtle */
         .pricing-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
@@ -328,25 +312,22 @@
             background: linear-gradient(to right, rgba(13, 17, 23, 0.95), rgba(13, 17, 23, 0.85));
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            /* --- FINAL FIX: Apply padding directly to navbar, not container --- */
-            padding: 0 20px; /* This gives space for the logo and menu */
+            padding: 0 20px;
         }
 
-        /* Main container for navbar content */
         .nav-container {
             display: flex;
-            justify-content: flex-end; /* Aligns items to the right */
+            justify-content: flex-end;
             align-items: center;
             height: 100%;
             width: 100%;
         }
 
-        /* Logo is now absolutely positioned in the top-left corner */
         .logo-container {
             position: absolute;
             top: 50%;
             left: 20px;
-            transform: translateY(-50%); /* Vertically centers the logo */
+            transform: translateY(-50%);
             z-index: 100;
         }
 
@@ -354,75 +335,65 @@
             background-color: transparent !important; 
             box-shadow: none !important;
             filter: drop-shadow(0 0 0 0 transparent) !important;
-            /* --- FINAL FIX: Ensure logo fits and scales --- */
-            max-height: 60px; /* Constrain to navbar height */
-            width: auto; /* Let height control the width to maintain aspect ratio */
-            object-fit: contain; /* Ensures the whole logo is visible and scales correctly */
+            max-height: 60px;
+            width: auto;
+            object-fit: contain;
         }
         
-        /* Container for nav links and mobile button */
         .nav-links-container {
             display: flex;
             align-items: center;
         }
         
         .nav-links {
-            display: none; /* Hidden by default */
+            display: none;
             align-items: center;
             gap: 2rem;
         }
 
-        /* Show nav links on medium screens and up */
         @media (min-width: 768px) {
             .nav-links {
                 display: flex;
             }
         }
         
-        /* --- REFINEMENT: MOBILE SPECIFIC STYLES --- */
         @media (max-width: 767px) {
-            /* Align items to top on mobile for more space */
             .nav-container {
                 align-items: flex-start;
-                padding-top: 1rem; /* Add some space from the top edge */
+                padding-top: 1rem;
             }
-            
-            /* --- NEW FIX: Logo adjustments for mobile --- */
             .logo-container {
-                /* Optional: Move the logo slightly closer to the edge for more space */
                 left: 15px; 
             }
-
             #main-logo {
-                /* Make the logo smaller on mobile to prevent it from taking up too much space */
-                max-height: 45px; /* Reduced from 60px */
+                max-height: 45px;
                 width: auto;
             }
         }
 
-        /* --- NEW: SLIDE-OUT MOBILE MENU STYLES --- */
+        /* --- SLIDE-OUT MOBILE MENU STYLES --- */
         #mobile-side-menu {
             position: fixed;
             top: 0;
             right: 0;
             height: 100vh;
             width: 300px;
-            background-color: #1f2937; /* Darker background for the panel */
-            transform: translateX(100%); /* Hide it off-screen to the right */
+            background-color: #1f2937;
+            transform: translateX(100%);
             transition: transform 0.3s ease-in-out;
-            z-index: 60; /* Higher z-index than navbar */
-            padding-top: 80px; /* Add padding to account for the fixed navbar */
+            z-index: 60;
+            padding-top: 80px;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
         }
 
         #mobile-side-menu.is-open {
-            transform: translateX(0); /* Slide it into view */
+            transform: translateX(0);
         }
 
         .mobile-menu-link {
             display: block;
             padding: 1rem 1.5rem;
-            color: #E5E7EB; /* Lighter text for the dark panel */
+            color: #E5E7EB;
             text-decoration: none;
             font-weight: 500;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -430,11 +401,10 @@
         }
 
         .mobile-menu-link:hover {
-            background-color: rgba(79, 70, 229, 0.2); /* Accent color on hover */
+            background-color: rgba(79, 70, 229, 0.2);
             color: #ffffff;
         }
         
-        /* Close button for the mobile menu */
         .mobile-menu-close-btn {
             position: absolute;
             top: 20px;
@@ -445,8 +415,6 @@
             cursor: pointer;
             padding: 5px;
         }
-        
-        /* --- REMOVED: Manual scroll button styles are now in .nav-button --- */
         
         /* Contact and More Infos Section Styles */
         .contact-info-card {
@@ -505,7 +473,6 @@
             text-decoration: underline;
         }
         
-        /* PayPal badge styles */
         .paypal-badge {
             display: inline-flex;
             align-items: center;
@@ -528,9 +495,9 @@
             theme: {
                 extend: {
                     colors: {
-                        'primary-dark': '#0d1117', /* Deep charcoal */
-                        'card-bg': '#1f2937',     /* Dark slate gray */
-                        'accent-indigo': '#4f46e5', /* Indigo 600 */
+                        'primary-dark': '#0d1117',
+                        'card-bg': '#1f2937',
+                        'accent-indigo': '#4f46e5',
                         'text-light': '#E5E7EB',
                         'text-muted': '#9CA3AF',
                     },
@@ -538,7 +505,7 @@
             }
         }
 
-        // --- Données pour le Marquee Films/Séries (6 items) ---
+        // --- Données pour le Marquee ---
         const moviePosters = [
             { title: "Film Aventure", img: "https://i.pinimg.com/1200x/a2/71/f0/a271f00df372a3023eac0c6ccfbaf104.jpg" }, 
             { title: "Série Dramatique", img: "https://i.pinimg.com/1200x/40/1b/58/401b58cce54d270793ab01d548a9d0a0.jpg" }, 
@@ -550,15 +517,14 @@
             { title: "Contenu C", img: "https://cdn.dribbble.com/userupload/8296701/file/original-ff6ea546c09163c03b8dd98d109e547d.png" }
         ];
 
-        // --- Données pour le Marquee Sport (10 items) ---
         const wideBannerUrl = "https://i.pinimg.com/736x/1a/1f/7f/1a1f7f48ac4650a604e1ce6c38c405ce.jpg";
         const sportPosters = [
-            { title: "Ligue Nationale", img: wideBannerUrl }, // Vertical 
-            { title: "Match de Football en Direct", img: "https://i.pinimg.com/1200x/38/57/26/3857266bf73582362363b0fd82637edf.jpg" }, // Vertical
-            { title: "NBA Match 1", img: "https://i.pinimg.com/1200x/0c/07/ce/0c07cef4d1b93d89a7122186e0b4e204.jpg" }, // Vertical
-            { title: "WC26", img: "https://i.pinimg.com/1200x/b4/33/b7/b433b7edae84bea89d8f0a272e9740d2.jpg" }, // Vertical
-            { title: "CAN25", img: "https://i.pinimg.com/1200x/0b/f9/75/0bf975ea0f784c1781e1fe84f8da4b33.jpg" }, // Vertical
-            { title: "Tennis", img: "https://i.pinimg.com/1200x/9f/0d/10/9f0d10148b648a070eb80890d85b3bc4.jpg" }, // Vertical
+            { title: "Ligue Nationale", img: wideBannerUrl }, 
+            { title: "Match de Football en Direct", img: "https://i.pinimg.com/1200x/38/57/26/3857266bf73582362363b0fd82637edf.jpg" }, 
+            { title: "NBA Match 1", img: "https://i.pinimg.com/1200x/0c/07/ce/0c07cef4d1b93d89a7122186e0b4e204.jpg" }, 
+            { title: "WC26", img: "https://i.pinimg.com/1200x/b4/33/b7/b433b7edae84bea89d8f0a272e9740d2.jpg" }, 
+            { title: "CAN25", img: "https://i.pinimg.com/1200x/0b/f9/75/0bf975ea0f784c1781e1fe84f8da4b33.jpg" }, 
+            { title: "Tennis", img: "https://i.pinimg.com/1200x/9f/0d/10/9f0d10148b648a070eb80890d85b3bc4.jpg" }, 
             { title: "Live Football", img: "https://i.pinimg.com/736x/2f/76/78/2f7678847a6e3e75ea72179bfce77c33.jpg" },
             { title: "UFC", img: "https://i.pinimg.com/736x/3a/9a/ac/3a9aacf5326195b3730aebf5e1614078.jpg" },
             { title: "Formule 1", img: "https://i.pinimg.com/1200x/bf/e2/11/bfe2113870ab43cf5971afa659d84fa8.jpg" },
@@ -588,7 +554,6 @@
             document.getElementById('custom-modal').classList.add('hidden');
         }
         
-        // --- UPDATED and IMPROVED Subscription Click Handler ---
         function handleSubscriptionClick(planName, adultPackId) {
             const emailAddress = "contactfrancy3@gmail.com";
             let subject = `Demande d'abonnement FrancyHostinger - Forfait ${planName}`;
@@ -600,10 +565,7 @@
                 body = `Bonjour,\n\nJe suis intéressé(e) par le forfait ${planName} avec le Pack Adulte optionnel que j'ai vu sur votre site web.\n\nVeuillez me fournir les détails pour finaliser l'abonnement et le paiement.\n\nCordialement,`;
             }
 
-            // 1. Try to open the mailto link (works for users with a default email client)
             window.location.href = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-            // 2. Show the modal as a fallback and for confirmation
             showSubscriptionModal(planName, emailAddress);
         }
 
@@ -625,152 +587,131 @@
             document.getElementById('subscription-modal').classList.add('hidden');
         }
         
-        // --- CORRECTED: Reverted to a simpler, more robust logic that builds on the original working code ---
-        function initializeWideMarquee(trackId, posters, speedSeconds) {
+        // --- FINAL CORRECTED: Robust and Simple carousel logic ---
+        function initializeCarousel(trackId, items, durationSeconds) {
             const track = document.getElementById(trackId);
             if (!track) return;
-            
-            const itemWidth = 500 + 24; // item width + margin
-            const totalItemsInTrack = posters.length * 2;
-            const totalWidth = itemWidth * totalItemsInTrack;
 
-            // Set width and animation duration for the CSS animation
-            track.style.width = `${totalWidth}px`;
-            track.style.animation = `horizontal-scroll-left ${speedSeconds}s linear infinite`;
-
-            const generateItem = (poster) => {
-                return `
-                    <div class="wide-poster-item poster-card">
-                        <img src="${poster.img}" 
-                             loading="lazy"
-                             onerror="this.onerror=null; this.src='https://placehold.co/1600x900/324C9E/F7F8FB/png?text=Erreur+Image';" 
-                             alt="Affiche ${poster.title}" 
-                             class="w-full h-full object-cover">
-                    </div>
-                `;
-            };
-
-            const duplicatedPosters = [...posters, ...posters]; 
-            track.innerHTML = duplicatedPosters.map(generateItem).join('');
-            
-            // NEW: Add button controls and pause logic
             const prevBtn = document.getElementById(trackId.replace('-track', '-prev-btn'));
             const nextBtn = document.getElementById(trackId.replace('-track', '-next-btn'));
-            
-            // Pause animation on interaction
-            const pauseAnimation = () => {
-                track.style.animationPlayState = 'paused';
-            };
-            
-            // Resume animation
-            const resumeAnimation = () => {
-                track.style.animationPlayState = 'running';
-            };
-            
-            // Manual scroll by buttons
-            const scrollBy = (amount) => {
-                pauseAnimation();
-                // The CSS animation uses transform, so we need to manipulate that directly
-                const currentTransform = window.getComputedStyle(track).transform;
-                const matrix = new DOMMatrix(currentTransform);
-                track.style.transform = `translateX(${matrix.m41 + amount}px)`;
-                
-                // Resume after a delay
-                setTimeout(resumeAnimation, 3000);
+
+            // Duplicate items for infinite scroll effect
+            const duplicatedItems = [...items, ...items];
+            track.innerHTML = duplicatedItems.map(item => `
+                <div class="${item.class}">
+                    <img src="${item.img}" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/${item.width}x${item.height}/324C9E/F7F8FB/png?text=Erreur+Image';" alt="${item.alt}" class="w-full h-full ${item.objectFit}">
+                </div>
+            `).join('');
+
+            let scrollInterval;
+            let baseSpeed;
+            let currentSpeed;
+            const speedBoostFactor = 5; // How many times faster to go on button click
+
+            const calculateSpeed = () => {
+                const totalScrollDistance = track.scrollWidth / 2;
+                // Speed in pixels per frame (assuming 60fps-ish)
+                baseSpeed = totalScrollDistance / (durationSeconds * 60);
+                currentSpeed = baseSpeed;
             };
 
-            if (prevBtn) prevBtn.addEventListener('click', () => scrollBy(-itemWidth * 3));
-            if (nextBtn) nextBtn.addEventListener('click', () => scrollBy(itemWidth * 3));
-            
-            // Pause on hover/touch
-            track.addEventListener('mouseenter', pauseAnimation);
-            track.addEventListener('mouseleave', resumeAnimation);
-            track.addEventListener('touchstart', pauseAnimation);
-            track.addEventListener('touchend', () => setTimeout(resumeAnimation, 3000));
-        }
+            const startAutoScroll = () => {
+                if (scrollInterval) clearInterval(scrollInterval);
+                scrollInterval = setInterval(() => {
+                    track.scrollLeft += currentSpeed;
+                    if (track.scrollLeft >= track.scrollWidth / 2) {
+                        track.scrollLeft = 0;
+                    }
+                }, 1000 / 60); // Aim for 60 frames per second
+            };
 
-        function initializeVerticalMarquee(trackId, posters, speedSeconds) {
-            const track = document.getElementById(trackId);
-            if (!track) return;
-            
-            const itemWidth = 200 + 24; // item width + margin
-            const totalItemsInTrack = posters.length * 2;
-            const totalWidth = itemWidth * totalItemsInTrack;
+            const pauseAutoScroll = () => {
+                if (scrollInterval) clearInterval(scrollInterval);
+            };
 
-            track.style.width = `${totalWidth}px`;
-            track.style.animation = `horizontal-scroll-left ${speedSeconds}s linear infinite`;
+            const resumeAutoScroll = () => {
+                currentSpeed = baseSpeed; // Ensure speed is reset to normal
+                startAutoScroll();
+            };
 
-            const generateItem = (poster) => {
-                let objectFitClass = 'object-cover';
-                let extraClasses = '';
-
-                if (poster.img === wideBannerUrl) {
-                    objectFitClass = 'object-contain';
-                    extraClasses = 'bg-primary-dark';
+            // --- Button Logic (Speed Boost) ---
+            const applySpeedBoost = () => {
+                currentSpeed = baseSpeed * speedBoostFactor;
+                // Resume scrolling with the new speed if it was paused
+                if (!scrollInterval) {
+                    startAutoScroll();
                 }
-
-                return `
-                    <div class="vertical-poster-item poster-card">
-                        <img src="${poster.img}" 
-                             loading="lazy"
-                             onerror="this.onerror=null; this.src='https://placehold.co/400x600/324C9E/F7F8FB/png?text=Erreur+Image';" 
-                             alt="Affiche ${poster.title}" 
-                             class="w-full h-full ${objectFitClass} ${extraClasses}">
-                    </div>
-                `;
+                // Reset speed after a delay
+                setTimeout(() => {
+                    currentSpeed = baseSpeed;
+                }, 2000); // Boost for 2 seconds
             };
 
-            const duplicatedPosters = [...posters, ...posters]; 
-            track.innerHTML = duplicatedPosters.map(generateItem).join('');
+            if (prevBtn) prevBtn.addEventListener('click', () => {
+                // Manually scroll back a bit before boosting forward
+                track.scrollLeft -= 300;
+                applySpeedBoost();
+            });
+            if (nextBtn) nextBtn.addEventListener('click', applySpeedBoost);
 
-            // NEW: Add button controls and pause logic
-            const prevBtn = document.getElementById(trackId.replace('-track', '-prev-btn'));
-            const nextBtn = document.getElementById(trackId.replace('-track', '-next-btn'));
-            
-            const pauseAnimation = () => { track.style.animationPlayState = 'paused'; };
-            const resumeAnimation = () => { track.style.animationPlayState = 'running'; };
-            const scrollBy = (amount) => {
-                pauseAnimation();
-                const currentTransform = window.getComputedStyle(track).transform;
-                const matrix = new DOMMatrix(currentTransform);
-                track.style.transform = `translateX(${matrix.m41 + amount}px)`;
-                setTimeout(resumeAnimation, 3000);
-            };
+            // --- Interaction Logic (Pause/Resume) ---
+            track.addEventListener('mouseenter', pauseAutoScroll);
+            track.addEventListener('mouseleave', resumeAutoScroll);
 
-            if (prevBtn) prevBtn.addEventListener('click', () => scrollBy(-itemWidth * 3));
-            if (nextBtn) nextBtn.addEventListener('click', () => scrollBy(itemWidth * 3));
-            
-            track.addEventListener('mouseenter', pauseAnimation);
-            track.addEventListener('mouseleave', resumeAnimation);
-            track.addEventListener('touchstart', pauseAnimation);
-            track.addEventListener('touchend', () => setTimeout(resumeAnimation, 3000));
+            // Use passive listeners for better mobile performance
+            track.addEventListener('touchstart', pauseAutoScroll, { passive: true });
+            track.addEventListener('touchend', () => {
+                setTimeout(resumeAutoScroll, 3000); // Wait 3s after user finishes scrolling
+            }, { passive: true });
+
+            // --- Initial Start ---
+            calculateSpeed();
+            startAutoScroll();
+
+            // --- Handle Resize ---
+            window.addEventListener('resize', () => {
+                calculateSpeed();
+            });
         }
 
-        function initializeChannelMarquee(trackId, logos, speedSeconds) {
-            const track = document.getElementById(trackId);
-            if (!track) return;
-            
-            const itemWidth = 180 + 24; // item width + margin
-            const totalItemsInTrack = logos.length * 2;
-            const totalWidth = itemWidth * totalItemsInTrack;
+        // --- Refactored initialization functions to use the new generic carousel logic ---
+        function initializeWideMarquee(trackId, posters, durationSeconds) {
+            const items = posters.map(poster => ({
+                img: poster.img,
+                alt: `Affiche ${poster.title}`,
+                class: 'wide-poster-item poster-card',
+                objectFit: 'object-cover',
+                width: 1600, // For placeholder
+                height: 900  // For placeholder
+            }));
+            initializeCarousel(trackId, items, durationSeconds);
+        }
 
-            track.style.width = `${totalWidth}px`;
-            track.style.animation = `horizontal-scroll-left ${speedSeconds}s linear infinite`;
+        function initializeVerticalMarquee(trackId, posters, durationSeconds) {
+            const items = posters.map(poster => {
+                const objectFit = poster.img === wideBannerUrl ? 'object-contain bg-primary-dark' : 'object-cover';
+                return {
+                    img: poster.img,
+                    alt: `Affiche ${poster.title}`,
+                    class: 'vertical-poster-item poster-card',
+                    objectFit: objectFit,
+                    width: 400, // For placeholder
+                    height: 600 // For placeholder
+                };
+            });
+            initializeCarousel(trackId, items, durationSeconds);
+        }
 
-            const generateItem = (logo) => {
-                return `
-                    <div class="square-channel-item">
-                        <img src="${logo.img}" 
-                             loading="lazy"
-                             onerror="this.onerror=null; this.src='https://placehold.co/180x180/324C9E/F7F8FB/png?text=Logo';" 
-                             alt="Logo de la ${logo.title}" 
-                             class="w-full h-full object-cover">
-                    </div>
-                `;
-            };
-
-            const duplicatedLogos = [...logos, ...logos];
-            track.innerHTML = duplicatedLogos.map(generateItem).join('');
+        function initializeChannelMarquee(trackId, logos, durationSeconds) {
+            const items = logos.map(logo => ({
+                img: logo.img,
+                alt: `Logo de la ${logo.title}`,
+                class: 'square-channel-item',
+                objectFit: 'object-cover',
+                width: 180, // For placeholder
+                height: 180 // For placeholder
+            }));
+            initializeCarousel(trackId, items, durationSeconds);
         }
         
         // --- Intersection Observer for fade-in animations ---
@@ -793,7 +734,7 @@
         window.addEventListener('load', () => {
             lucide.createIcons(); 
 
-            // CORRECTED: Initialize carousels with the safer logic
+            // Initialize carousels with the final, correct logic
             initializeWideMarquee('movies-marquee-track', moviePosters, 30); 
             initializeVerticalMarquee('sports-marquee-track', sportPosters, 50); 
             initializeChannelMarquee('channels-marquee-track', channelLogos, 10); 
@@ -803,53 +744,34 @@
                 observer.observe(card);
             });
 
-            // Mobile menu logic (Updated for slide-out menu)
+            // Mobile menu logic
             const menuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-side-menu');
             const closeButton = document.getElementById('mobile-menu-close-btn');
 
-            const openMenu = () => {
-                mobileMenu.classList.add('is-open');
-            };
-
-            const closeMenu = () => {
-                mobileMenu.classList.remove('is-open');
-            };
+            const openMenu = () => { mobileMenu.classList.add('is-open'); };
+            const closeMenu = () => { mobileMenu.classList.remove('is-open'); };
 
             menuButton.addEventListener('click', openMenu);
             closeButton.addEventListener('click', closeMenu);
             
-            // Close menu when clicking on links
             mobileMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', closeMenu);
             });
             
-            // Close menu when pressing Escape key
             document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape') {
-                    closeMenu();
-                }
+                if (event.key === 'Escape') { closeMenu(); }
             });
         });
     </script>
 </head>
 <body class="text-text-light antialiased">
     <div class="page-overlay"></div>
-
     <div class="content-wrapper">
-
-        <!-- FINAL FIX: RESTRUCTURED NAVIGATION -->
         <nav class="navbar">
-            <!-- Logo is now positioned absolutely in the top-left corner -->
             <a href="#hero" class="logo-container">
-                <img id="main-logo"
-                     src="FRANCY.png" 
-                     alt="FrancyHostinger Logo" 
-                     onerror="this.onerror=null; this.src='https://placehold.co/150x40/4f46e5/ffffff?text=FHostinger';"
-                     class="transition duration-300 transform hover:scale-105">
+                <img id="main-logo" src="FRANCY.png" alt="FrancyHostinger Logo" onerror="this.onerror=null; this.src='https://placehold.co/150x40/4f46e5/ffffff?text=FHostinger';" class="transition duration-300 transform hover:scale-105">
             </a>
-
-            <!-- Nav links and button are in a separate container on the right -->
             <div class="nav-container">
                 <div class="nav-links-container">
                     <div class="nav-links text-text-muted font-medium">
@@ -858,8 +780,6 @@
                         <a href="#test-iptv" class="hover:text-accent-indigo transition duration-300">Test IPTV</a>
                         <a href="#pricing" class="hover:text-accent-indigo transition duration-300">Tarifs</a>
                     </div>
-
-                    <!-- Mobile menu button on the right -->
                     <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-text-light hover:bg-gray-700 transition duration-300" aria-label="Menu">
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
@@ -867,7 +787,6 @@
             </div>
         </nav>
         
-        <!-- Mobile Menu Overlay -->
         <div id="mobile-side-menu">
             <button id="mobile-menu-close-btn" class="mobile-menu-close-btn" aria-label="Close Menu">
                 <i data-lucide="x" class="w-6 h-6"></i>
@@ -883,13 +802,10 @@
             <div class="bg-card-bg p-6 rounded-xl shadow-2xl max-w-sm w-full border border-accent-indigo">
                 <h3 id="modal-title" class="text-xl font-bold mb-3 text-accent-indigo"></h3>
                 <p id="modal-message" class="text-text-muted mb-6"></p>
-                <button onclick="closeModal()" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light font-semibold py-2 rounded-lg transition duration-300">
-                    Fermer
-                </button>
+                <button onclick="closeModal()" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light font-semibold py-2 rounded-lg transition duration-300">Fermer</button>
             </div>
         </div>
 
-        <!-- NEW: Subscription Confirmation Modal -->
         <div id="subscription-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center p-4">
             <div class="bg-card-bg p-6 rounded-xl shadow-2xl max-w-md w-full border border-accent-indigo">
                 <h3 id="subscription-modal-title" class="text-xl font-bold mb-3 text-accent-indigo"></h3>
@@ -898,10 +814,7 @@
                     <p class="text-sm text-text-muted mb-1">Envoyez un email à :</p>
                     <a id="subscription-modal-email" href="mailto:contactfrancy3@gmail.com" class="text-accent-indigo font-semibold text-lg hover:underline"></a>
                 </div>
-                </div>
-                <button onclick="closeSubscriptionModal()" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light font-semibold py-2 rounded-lg transition duration-300">
-                    J'ai compris
-                </button>
+                <button onclick="closeSubscriptionModal()" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light font-semibold py-2 rounded-lg transition duration-300">J'ai compris</button>
             </div>
         </div>
 
@@ -923,89 +836,44 @@
 
         <section id="content" class="section-bg py-24 px-4 md:px-12 overflow-hidden">
             <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-6">Films et Séries <span class="text-accent-indigo">Exclusifs</span></h2>
+                <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">Explorez des films 4K HDR, des séries acclamées et des originaux introuvables ailleurs.</p>
                 
-                <h2 class="text-3xl md:text-5xl font-bold text-center mb-6">
-                    Films et Séries <span class="text-accent-indigo">Exclusifs</span>
-                </h2>
-                <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">
-                    Explorez des films 4K HDR, des séries acclamées et des originaux introuvables ailleurs.
-                </p>
-                
-                <!-- MODIFICATION: Added navigation buttons and updated track -->
                 <div class="pro-motion-container">
-                    <button id="movies-prev-btn" class="nav-button prev">
-                        <i data-lucide="chevron-left"></i>
-                    </button>
-                    <button id="movies-next-btn" class="nav-button next">
-                        <i data-lucide="chevron-right"></i>
-                    </button>
-                    <div id="movies-marquee-track" class="pro-motion-track">
-                        <!-- Content generated by JS -->
-                    </div>
+                    <button id="movies-prev-btn" class="nav-button prev"><i data-lucide="chevron-left"></i></button>
+                    <button id="movies-next-btn" class="nav-button next"><i data-lucide="chevron-right"></i></button>
+                    <div id="movies-marquee-track" class="pro-motion-track"></div>
                 </div>
 
-                <h2 class="text-3xl md:text-5xl font-bold text-center mb-6 mt-24">
-                    Sport en Direct et <span class="text-accent-indigo">Événements</span>
-                </h2>
-                <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">
-                    Ne manquez jamais un match. De la ligue de football aux événements mondiaux, vivez l'action en direct.
-                </p>
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-6 mt-24">Sport en Direct et <span class="text-accent-indigo">Événements</span></h2>
+                <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">Ne manquez jamais un match. De la ligue de football aux événements mondiaux, vivez l'action en direct.</p>
 
-                <!-- MODIFICATION: Added navigation buttons and updated track -->
                 <div class="pro-motion-container">
-                    <button id="sports-prev-btn" class="nav-button prev">
-                        <i data-lucide="chevron-left"></i>
-                    </button>
-                    <button id="sports-next-btn" class="nav-button next">
-                        <i data-lucide="chevron-right"></i>
-                    </button>
-                    <div id="sports-marquee-track" class="pro-motion-track">
-                        <!-- Content generated by JS -->
-                    </div>
+                    <button id="sports-prev-btn" class="nav-button prev"><i data-lucide="chevron-left"></i></button>
+                    <button id="sports-next-btn" class="nav-button next"><i data-lucide="chevron-right"></i></button>
+                    <div id="sports-marquee-track" class="pro-motion-track"></div>
                 </div>
                 
-                <h2 class="text-3xl md:text-5xl font-bold text-center mb-6 mt-24">
-                    Highlights <span class="text-accent-indigo">des Ligues</span>
-                </h2>
-                <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">
-                    Accès instantané à des milliers de chaînes du monde entier, 24h/24 et 7j/7.
-                </p>
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-6 mt-24">Highlights <span class="text-accent-indigo">des Ligues</span></h2>
+                <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">Accès instantané à des milliers de chaînes du monde entier, 24h/24 et 7j/7.</p>
 
                 <div class="pro-motion-container">
-                    <div id="channels-marquee-track" class="pro-motion-track">
-                    </div>
+                    <div id="channels-marquee-track" class="pro-motion-track"></div>
                 </div>
             </div>
         </section>
 
         <section id="test-iptv" class="section-bg py-24 px-4 md:px-12 border-t border-b border-gray-700/50">
             <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-3xl md:text-5xl font-bold mb-6">
-                    Demandez Votre <span class="text-accent-indigo">Test IPTV 24H</span> Gratuit
-                </h2>
-                <p class="text-center text-lg text-text-muted mb-12 max-w-2xl mx-auto">
-                    Remplissez ce formulaire pour recevoir votre accès test. Découvrez la puissance de FrancyHostinger sans engagement.
-                </p>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">Demandez Votre <span class="text-accent-indigo">Test IPTV 24H</span> Gratuit</h2>
+                <p class="text-center text-lg text-text-muted mb-12 max-w-2xl mx-auto">Remplissez ce formulaire pour recevoir votre accès test. Découvrez la puissance de FrancyHostinger sans engagement.</p>
                 
                 <div class="max-w-xl mx-auto">
-                    <!-- FINAL FORM FOR GOOGLE SHEETS -->
                     <form id="test-form">
-                        <div class="mb-6">
-                            <label for="name" class="block text-left text-text-muted font-medium mb-2">Votre Nom Complet</label>
-                            <input type="text" id="name" name="name" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="Jean Dupont" required>
-                        </div>
-                        <div class="mb-6">
-                            <label for="country" class="block text-left text-text-muted font-medium mb-2">Votre Pays</label>
-                            <input type="text" id="country" name="country" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="France" required>
-                        </div>
-                        <div class="mb-8">
-                            <label for="email" class="block text-left text-text-muted font-medium mb-2">Votre Email</label>
-                            <input type="email" id="email" name="email" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="vous@exemple.com" required>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-10 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-xl shadow-xl shadow-accent-indigo/50">
-                            Envoyer ma demande de test
-                        </button>
+                        <div class="mb-6"><label for="name" class="block text-left text-text-muted font-medium mb-2">Votre Nom Complet</label><input type="text" id="name" name="name" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="Jean Dupont" required></div>
+                        <div class="mb-6"><label for="country" class="block text-left text-text-muted font-medium mb-2">Votre Pays</label><input type="text" id="country" name="country" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="France" required></div>
+                        <div class="mb-8"><label for="email" class="block text-left text-text-muted font-medium mb-2">Votre Email</label><input type="email" id="email" name="email" class="w-full bg-primary-dark border border-gray-700/50 text-text-light text-lg rounded-lg focus:ring-accent-indigo focus:border-accent-indigo p-3.5 transition duration-300" placeholder="vous@exemple.com" required></div>
+                        <button type="submit" class="w-full bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-10 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-xl shadow-accent-indigo/50">Envoyer ma demande de test</button>
                     </form>
                 </div>
             </div>
@@ -1013,231 +881,41 @@
 
         <section id="pricing" class="section-bg py-24 px-4 md:px-12">
             <h2 class="text-3xl md:text-5xl font-bold text-center mb-6">Formules Simples. <span class="text-accent-indigo">Sans Engagement.</span></h2>
-            <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">
-                Choisissez la formule qui correspond à vos habitudes et économisez en vous engageant sur la durée.
-            </p>
-
-            <!-- EDIT: Updated grid layout for better cohesion -->
-            <div class="max-w-6xl mx-auto grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                
-                <!-- 3 Months Plan -->
+            <p class="text-center text-lg text-text-muted mb-16 max-w-2xl mx-auto">Choisissez la formule qui correspond à vos habitudes et économisez en vous engageant sur la durée.</p>
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+                <!-- Pricing cards here (unchanged) -->
                 <div class="pricing-card card-bg p-8 rounded-xl shadow-2xl border border-gray-700/50 flex flex-col">
-                    <h3 class="text-3xl font-bold mb-1">3 Mois</h3>
-                    <p class="text-accent-indigo font-semibold mb-6">Découverte</p>
-                    <p class="text-5xl font-extrabold mb-1 text-text-light">25€<span class="text-2xl font-normal text-text-muted">/Total</span></p>
-                    <p class="text-sm text-text-muted mb-8">Facturé tous les 3 mois.</p>
-                    
-                    <div class="space-y-5 mb-10 flex-grow">
-                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
-                            <i data-lucide="tv" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
-                            <div>
-                                <span class="text-xl font-bold text-text-light">15 000+</span>
-                                <span class="block text-sm text-text-muted">Chaînes TV en Direct</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
-                            <i data-lucide="film" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
-                            <div>
-                                <span class="text-xl font-bold text-text-light">50 000+</span>
-                                <span class="block text-sm text-text-muted">Films & Séries (VOD)</span>
-                            </div>
-                        </div>
-                        
-                        <hr class="border-gray-700/50 my-5">
-
-                        <ul class="space-y-3 text-text-muted text-sm">
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Guide TV ( EPG )</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Support Client 24/7</li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Adult Pack Add-on -->
-                    <div class="mb-4 p-3 rounded-lg border border-gray-600/50 flex items-center justify-between">
-                        <label for="adult-pack-3" class="text-sm font-medium cursor-pointer flex items-center">
-                            Ajouter le Pack Adulte (+5€)
-                        </label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="adult-pack-3">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </label>
-                    </div>
-
-                    <button onclick="handleSubscriptionClick('3 Mois', 'adult-pack-3')" class="w-full cta-button text-text-light font-bold py-3 rounded-lg shadow-md mt-auto">
-                        Choisir cette formule
-                    </button>
+                    <h3 class="text-3xl font-bold mb-1">3 Mois</h3><p class="text-accent-indigo font-semibold mb-6">Découverte</p><p class="text-5xl font-extrabold mb-1 text-text-light">25€<span class="text-2xl font-normal text-text-muted">/Total</span></p><p class="text-sm text-text-muted mb-8">Facturé tous les 3 mois.</p>
+                    <div class="space-y-5 mb-10 flex-grow"><div class="flex items-center p-3 rounded-lg bg-primary-dark/50"><i data-lucide="tv" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i><div><span class="text-xl font-bold text-text-light">15 000+</span><span class="block text-sm text-text-muted">Chaînes TV en Direct</span></div></div><div class="flex items-center p-3 rounded-lg bg-primary-dark/50"><i data-lucide="film" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i><div><span class="text-xl font-bold text-text-light">50 000+</span><span class="block text-sm text-text-muted">Films & Séries (VOD)</span></div></div><hr class="border-gray-700/50 my-5"><ul class="space-y-3 text-text-muted text-sm"><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Guide TV ( EPG )</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Support Client 24/7</li></ul></div>
+                    <div class="mb-4 p-3 rounded-lg border border-gray-600/50 flex items-center justify-between"><label for="adult-pack-3" class="text-sm font-medium cursor-pointer flex items-center">Ajouter le Pack Adulte (+5€)</label><label class="toggle-switch"><input type="checkbox" id="adult-pack-3"><span class="toggle-slider"></span></label></label></div>
+                    <button onclick="handleSubscriptionClick('3 Mois', 'adult-pack-3')" class="w-full cta-button text-text-light font-bold py-3 rounded-lg shadow-md mt-auto">Choisir cette formule</button>
                 </div>
-
-                <!-- 6 Months Plan (Featured) -->
                 <div class="pricing-card featured card-bg p-8 rounded-xl shadow-2xl flex flex-col transform md:scale-105">
-                    <div class="flex justify-center mb-4">
-                        <span class="featured-badge">Le Choix Populaire</span>
-                    </div>
-                    <h3 class="text-3xl font-bold mb-1 text-center">6 Mois</h3>
-                    <p class="text-accent-indigo font-semibold mb-6 text-center">Meilleur Rapport Qualité-Prix</p>
-                    <p class="text-6xl font-extrabold mb-1 text-center text-accent-indigo">35€<span class="text-2xl font-normal text-text-muted">/Total</span></p>
-                    <p class="text-sm text-text-muted mb-8 text-center">Facturé tous les 6 mois.</p>
-                    
-                    <div class="space-y-5 mb-10 flex-grow">
-                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
-                            <i data-lucide="tv" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
-                            <div>
-                                <span class="text-xl font-bold text-text-light">15 000+</span>
-                                <span class="block text-sm text-text-muted">Chaînes TV en Direct</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
-                            <i data-lucide="film" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
-                            <div>
-                                <span class="text-xl font-bold text-text-light">50 000+</span>
-                                <span class="block text-sm text-text-muted">Films & Séries (VOD)</span>
-                            </div>
-                        </div>
-                        
-                        <hr class="border-gray-700/50 my-5">
-
-                        <ul class="space-y-3 text-text-muted text-sm">
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Guide TV ( EPG )</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Support Client 24/7</li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Adult Pack Add-on -->
-                    <div class="mb-4 p-3 rounded-lg border border-gray-600/50 flex items-center justify-between">
-                        <label for="adult-pack-6" class="text-sm font-medium cursor-pointer flex items-center">
-                            Ajouter le Pack Adulte (+5€)
-                        </label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="adult-pack-6">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </label>
-                    </div>
-
-                    <button onclick="handleSubscriptionClick('6 Mois', 'adult-pack-6')" class="w-full cta-button featured-btn text-text-light font-bold py-3 rounded-lg mt-auto">
-                        Choisir cette formule
-                    </button>
+                    <div class="flex justify-center mb-4"><span class="featured-badge">Le Choix Populaire</span></div><h3 class="text-3xl font-bold mb-1 text-center">6 Mois</h3><p class="text-accent-indigo font-semibold mb-6 text-center">Meilleur Rapport Qualité-Prix</p><p class="text-6xl font-extrabold mb-1 text-center text-accent-indigo">35€<span class="text-2xl font-normal text-text-muted">/Total</span></p><p class="text-sm text-text-muted mb-8 text-center">Facturé tous les 6 mois.</p>
+                    <div class="space-y-5 mb-10 flex-grow"><div class="flex items-center p-3 rounded-lg bg-primary-dark/50"><i data-lucide="tv" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i><div><span class="text-xl font-bold text-text-light">15 000+</span><span class="block text-sm text-text-muted">Chaînes TV en Direct</span></div></div><div class="flex items-center p-3 rounded-lg bg-primary-dark/50"><i data-lucide="film" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i><div><span class="text-xl font-bold text-text-light">50 000+</span><span class="block text-sm text-text-muted">Films & Séries (VOD)</span></div></div><hr class="border-gray-700/50 my-5"><ul class="space-y-3 text-text-muted text-sm"><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Guide TV ( EPG )</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Support Client 24/7</li></ul></div>
+                    <div class="mb-4 p-3 rounded-lg border border-gray-600/50 flex items-center justify-between"><label for="adult-pack-6" class="text-sm font-medium cursor-pointer flex items-center">Ajouter le Pack Adulte (+5€)</label><label class="toggle-switch"><input type="checkbox" id="adult-pack-6"><span class="toggle-slider"></span></label></label></div>
+                    <button onclick="handleSubscriptionClick('6 Mois', 'adult-pack-6')" class="w-full cta-button featured-btn text-text-light font-bold py-3 rounded-lg mt-auto">Choisir cette formule</button>
                 </div>
-
-                <!-- 12 Months Plan -->
                 <div class="pricing-card card-bg p-8 rounded-xl shadow-2xl border border-gray-700/50 flex flex-col">
-                    <h3 class="text-3xl font-bold mb-1">12 Mois</h3>
-                    <p class="text-accent-indigo font-semibold mb-6 text-center">Meilleure Valeur</p>
-                    <p class="text-6xl font-extrabold mb-1 text-center text-accent-indigo">55€<span class="text-2xl font-normal text-text-muted">/Total</span></p>
-                    <p class="text-sm text-text-muted mb-8 text-center">Facturé annuellement.</p>
-                    
-                    <div class="space-y-5 mb-10 flex-grow">
-                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
-                            <i data-lucide="tv" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
-                            <div>
-                                <span class="text-xl font-bold text-text-light">15 000+</span>
-                                <span class="block text-sm text-text-muted">Chaînes TV en Direct</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center p-3 rounded-lg bg-primary-dark/50">
-                            <i data-lucide="film" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i>
-                            <div>
-                                <span class="text-xl font-bold text-text-light">50 000+</span>
-                                <span class="block text-sm text-text-muted">Films & Séries (VOD)</span>
-                            </div>
-                        </div>
-                        
-                        <hr class="border-gray-700/50 my-5">
-
-                        <ul class="space-y-3 text-text-muted text-sm">
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Guide TV ( EPG )</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li>
-                            <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Support Client 24/7</li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Adult Pack Add-on -->
-                    <div class="mb-4 p-3 rounded-lg border border-gray-600/50 flex items-center justify-between">
-                        <label for="adult-pack-12" class="text-sm font-medium cursor-pointer flex items-center">
-                            Ajouter le Pack Adulte (+5€)
-                        </label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="adult-pack-12">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </label>
-                    </div>
-
-                    <button onclick="handleSubscriptionClick('12 Mois', 'adult-pack-12')" class="w-full cta-button text-text-light font-bold py-3 rounded-lg shadow-md mt-auto">
-                        Choisir cette formule
-                    </button>
+                    <h3 class="text-3xl font-bold mb-1">12 Mois</h3><p class="text-accent-indigo font-semibold mb-6 text-center">Meilleure Valeur</p><p class="text-6xl font-extrabold mb-1 text-center text-accent-indigo">55€<span class="text-2xl font-normal text-text-muted">/Total</span></p><p class="text-sm text-text-muted mb-8 text-center">Facturé annuellement.</p>
+                    <div class="space-y-5 mb-10 flex-grow"><div class="flex items-center p-3 rounded-lg bg-primary-dark/50"><i data-lucide="tv" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i><div><span class="text-xl font-bold text-text-light">15 000+</span><span class="block text-sm text-text-muted">Chaînes TV en Direct</span></div></div><div class="flex items-center p-3 rounded-lg bg-primary-dark/50"><i data-lucide="film" class="w-6 h-6 text-accent-indigo mr-4 flex-shrink-0"></i><div><span class="text-xl font-bold text-text-light">50 000+</span><span class="block text-sm text-text-muted">Films & Séries (VOD)</span></div></div><hr class="border-gray-700/50 my-5"><ul class="space-y-3 text-text-muted text-sm"><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> 1 Abonnement = 1 Appareil</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Guide TV ( EPG )</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Différentes Qualités FHD , HD & SD</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Tous Appareils Supportés</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Sans Frais d'Activation</li><li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-accent-indigo mt-1 mr-3 flex-shrink-0"></i> Support Client 24/7</li></ul></div>
+                    <div class="mb-4 p-3 rounded-lg border border-gray-600/50 flex items-center justify-between"><label for="adult-pack-12" class="text-sm font-medium cursor-pointer flex items-center">Ajouter le Pack Adulte (+5€)</label><label class="toggle-switch"><input type="checkbox" id="adult-pack-12"><span class="toggle-slider"></span></label></label></div>
+                    <button onclick="handleSubscriptionClick('12 Mois', 'adult-pack-12')" class="w-full cta-button text-text-light font-bold py-3 rounded-lg shadow-md mt-auto">Choisir cette formule</button>
                 </div>
             </div>
         </section>
 
-        <!-- NEW: Contact and More Infos Section -->
         <section id="contact" class="section-bg py-24 px-4 md:px-12">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-3xl md:text-5xl font-bold text-center mb-12">
-                    Contactez-nous et <span class="text-accent-indigo">Plus d'Infos</span>
-                </h2>
-                
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-12">Contactez-nous et <span class="text-accent-indigo">Plus d'Infos</span></h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Contact Card -->
                     <div class="contact-info-card p-8">
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i data-lucide="mail" class="w-6 h-6 text-accent-indigo"></i>
-                            </div>
-                            <div class="info-content">
-                                <h3>Email</h3>
-                                <p>Nous sommes disponibles pour répondre à toutes vos questions.</p>
-                                <a href="mailto:contactfrancy3@gmail.com" class="email-link">contactfrancy3@gmail.com</a>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i data-lucide="clock" class="w-6 h-6 text-accent-indigo"></i>
-                            </div>
-                            <div class="info-content">
-                                <h3>Disponibilité</h3>
-                                <p>Notre équipe de support est disponible 7j/7 et 24h/7 pour vous assister.</p>
-                            </div>
-                        </div>
+                        <div class="info-item"><div class="info-icon"><i data-lucide="mail" class="w-6 h-6 text-accent-indigo"></i></div><div class="info-content"><h3>Email</h3><p>Nous sommes disponibles pour répondre à toutes vos questions.</p><a href="mailto:contactfrancy3@gmail.com" class="email-link">contactfrancy3@gmail.com</a></div></div>
+                        <div class="info-item"><div class="info-icon"><i data-lucide="clock" class="w-6 h-6 text-accent-indigo"></i></div><div class="info-content"><h3>Disponibilité</h3><p>Notre équipe de support est disponible 7j/7 et 24h/7 pour vous assister.</p></div></div>
                     </div>
-                    
-                    <!-- More Infos Card -->
                     <div class="contact-info-card p-8">
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i data-lucide="smartphone" class="w-6 h-6 text-accent-indigo"></i>
-                            </div>
-                            <div class="info-content">
-                                <h3>Compatibilité</h3>
-                                <p>FrancyHostinger fonctionne sur tous les appareils modernes: Smart TV, Android, iOS, MAG, Fire Stick et plus.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i data-lucide="shield-check" class="w-6 h-6 text-accent-indigo"></i>
-                            </div>
-                            <div class="info-content">
-                                <h3>Paiement Sécurisé</h3>
-                                <p>Payez en toute sécurité avec PayPal, notre partenaire de confiance pour les transactions en ligne.</p>
-                                <div class="paypal-badge">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg" alt="PayPal" class="paypal-logo">
-                                    <span class="text-white text-sm font-medium">PayPal</span>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="info-item"><div class="info-icon"><i data-lucide="smartphone" class="w-6 h-6 text-accent-indigo"></i></div><div class="info-content"><h3>Compatibilité</h3><p>FrancyHostinger fonctionne sur tous les appareils modernes: Smart TV, Android, iOS, MAG, Fire Stick et plus.</p></div></div>
+                        <div class="info-item"><div class="info-icon"><i data-lucide="shield-check" class="w-6 h-6 text-accent-indigo"></i></div><div class="info-content"><h3>Paiement Sécurisé</h3><p>Payez en toute sécurité avec PayPal, notre partenaire de confiance pour les transactions en ligne.</p><div class="paypal-badge"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg" alt="PayPal" class="paypal-logo"><span class="text-white text-sm font-medium">PayPal</span></div></div></div>
                     </div>
                 </div>
             </div>
@@ -1245,92 +923,38 @@
 
         <footer class="section-bg pt-16 pb-20 px-4 md:px-12 text-center border-t border-gray-700/50">
             <div class="max-w-4xl mx-auto">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">
-                    Prêt(e) à <span class="text-accent-indigo">améliorer votre expérience ?</span>
-                </h2>
-                <p class="text-xl text-text-muted mb-8">
-                    Annulez à tout moment. Sans frais cachés. Juste du divertissement pur et ininterrompu.
-                </p>
-                <a href="#pricing" class="bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-12 rounded-xl transition duration-300 transform hover:scale-105 shadow-2xl shadow-2xl shadow-accent-indigo/50 inline-block">
-                    Voir nos Abonnements
-                </a>
-                
-                <!-- EDIT: Added Payment Method Section -->
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Prêt(e) à <span class="text-accent-indigo">améliorer votre expérience ?</span></h2>
+                <p class="text-xl text-text-muted mb-8">Annulez à tout moment. Sans frais cachés. Juste du divertissement pur et ininterrompu.</p>
+                <a href="#pricing" class="bg-accent-indigo hover:bg-indigo-700 text-text-light text-xl font-bold py-4 px-12 rounded-xl transition duration-300 transform hover:scale-105 shadow-2xl shadow-accent-indigo/50 inline-block">Voir nos Abonnements</a>
                 <div class="mt-12 pt-8 border-t border-gray-700/50">
                     <p class="text-sm text-text-muted mb-4">Moyens de paiement sécurisés</p>
-                    <div class="flex items-center justify-center space-x-4">
-                        <!-- EDIT: Updated PayPal logo URL to high-res PNG -->
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg" alt="Logo PayPal" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0">
-                    </div>
+                    <div class="flex items-center justify-center space-x-4"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg" alt="Logo PayPal" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0"></div>
                 </div>
-
-                <div class="mt-12 text-sm text-text-muted/50">
-                    &copy; 2025 FrancyHostinger. Tous droits réservés.
-                </div>
+                <div class="mt-12 text-sm text-text-muted/50">&copy; 2025 FrancyHostinger. Tous droits réservés.</div>
             </div>
         </footer>
     </div>
 
     <script>
-        // --- FINAL and CORRECTED Google Sheets Form Submission Logic ---
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('test-form');
             if (form) {
                 form.addEventListener('submit', function(e) {
-                    // Prevent the form from doing a default page reload
                     e.preventDefault();
-                    
                     const submitButton = form.querySelector('button[type="submit"]');
                     const originalButtonText = submitButton.innerText;
-                    
-                    // Update button UI to show loading state
                     submitButton.innerText = 'Envoi en cours...';
                     submitButton.disabled = true;
-
-                    // Your API URL from SheetDB
-                    const apiUrl = 'https://sheetdb.io/api/v1/ew5bjcg21y2r9'; 
-
-                    // Manually get the data from each form field
-                    const data = {
-                        name: document.getElementById('name').value,
-                        country: document.getElementById('country').value,
-                        email: document.getElementById('email').value
-                    };
-
-                    // Send the data to your Google Sheet using the SheetDB API
-                    fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        // The data object MUST be wrapped in a "data" object
-                        body: JSON.stringify({
-                            data: data
-                        })
-                    })
+                    const apiUrl = 'https://sheetdb.io/api/v1/ew5bjcg21y2r9';
+                    const data = { name: document.getElementById('name').value, country: document.getElementById('country').value, email: document.getElementById('email').value };
+                    fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify({ data: data }) })
                     .then(response => response.json())
-                    .then(result => {
-                        // Check if the API confirms that the row was created
-                        if (result.created) {
-                            showModal('Demande Reçue !', 'Merci ! Votre demande de test a bien été envoyée. Nous vous contacterons très prochainement.');
-                            form.reset(); // Clear the form fields for the next entry
-                        } else {
-                            showModal('Erreur', 'Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showModal('Erreur de Connexion', 'Une erreur de réseau est survenue. Veuillez réessayer.');
-                    })
-                    .finally(() => {
-                        // Restore the button UI in all cases
-                        submitButton.innerText = originalButtonText;
-                        submitButton.disabled = false;
-                    });
+                    .then(result => { if (result.created) { showModal('Demande Reçue !', 'Merci ! Votre demande de test a bien été envoyée. Nous vous contacterons très prochainement.'); form.reset(); } else { showModal('Erreur', 'Une erreur est survenue lors de l\'envoi. Veuillez réessayer.'); } })
+                    .catch(error => { console.error('Error:', error); showModal('Erreur de Connexion', 'Une erreur de réseau est survenue. Veuillez réessayer.'); })
+                    .finally(() => { submitButton.innerText = originalButtonText; submitButton.disabled = false; });
                 });
             }
         });
     </script>
-</script>
 </body>
 </html>
