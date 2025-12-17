@@ -645,6 +645,35 @@
             // Apply the new delay. The animation will instantly jump to the correct frame and continue.
             track.style.animationDelay = `-${newDelay}s`;
         }
+
+        // --- NEW: Helper function to sync animation with manual transform ---
+        function setTrackPosition(trackElement, animationDuration) {
+            const totalWidth = parseFloat(trackElement.dataset.totalWidth);
+            const animationDistance = totalWidth / 2;
+
+            // Get the final transform value after the drag
+            const transform = window.getComputedStyle(trackElement).transform;
+            let finalX = 0;
+            if (transform !== 'none') {
+                const matrix = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                finalX = parseFloat(matrix[4]) || 0;
+            }
+
+            // Normalize the new position to be within the animation's range [0, -animationDistance]
+            finalX = finalX % animationDistance;
+            if (finalX > 0) {
+                finalX = finalX - animationDistance;
+            }
+
+            // Calculate the proportion of the animation that has passed
+            const proportion = Math.abs(finalX) / animationDistance;
+
+            // Calculate the new animation delay
+            const newDelay = animationDuration * proportion;
+
+            // Apply the new delay
+            trackElement.style.animationDelay = `-${newDelay}s`;
+        }
         
         // --- UPDATED: Fonction pour initialiser le Marquee Wide (Films/Séries) ---
         function initializeWideMarquee(trackId, posters, speedSeconds) {
@@ -677,18 +706,25 @@
             const duplicatedPosters = [...posters, ...posters]; 
             track.innerHTML = duplicatedPosters.map(generateItem).join('');
             
-            // Add manual drag scroll logic
+            // Add manual drag/scroll logic
             let isDown = false;
             let startX;
-            let scrollLeft = 0;
+            let currentTranslate = 0;
 
-            // Mouse events
+            // Mouse events (for desktop)
             track.addEventListener('mousedown', (e) => {
                 isDown = true;
-                startX = e.pageX - scrollLeft;
                 track.style.animationPlayState = 'paused';
                 track.style.cursor = 'grabbing';
-                track.style.userSelect = 'none'; // Prevent text selection while dragging
+                track.style.userSelect = 'none';
+                startX = e.pageX;
+                const transform = window.getComputedStyle(track).transform;
+                if (transform !== 'none') {
+                    const matrix = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                    currentTranslate = parseFloat(matrix[4]) || 0;
+                } else {
+                    currentTranslate = 0;
+                }
             });
 
             track.addEventListener('mouseleave', () => {
@@ -696,6 +732,17 @@
                     isDown = false;
                     track.style.cursor = 'grab';
                     track.style.userSelect = 'auto';
+                    setTrackPosition(track, speedSeconds);
+                    track.style.animationPlayState = 'running';
+                }
+            });
+
+            track.addEventListener('mouseup', () => {
+                if (isDown) {
+                    isDown = false;
+                    track.style.cursor = 'grab';
+                    track.style.userSelect = 'auto';
+                    setTrackPosition(track, speedSeconds);
                     track.style.animationPlayState = 'running';
                 }
             });
@@ -704,21 +751,29 @@
                 if (!isDown) return;
                 e.preventDefault();
                 const x = e.pageX;
-                const walk = (x - startX) * 2; // For a faster scroll effect
-                scrollLeft -= walk;
-                track.style.transform = `translateX(${scrollLeft}px)`;
+                const walk = (x - startX);
+                const newTranslate = currentTranslate + walk;
+                track.style.transform = `translateX(${newTranslate}px)`;
             });
 
-            // Touch events
+            // Touch events (for mobile)
             track.addEventListener('touchstart', (e) => {
                 isDown = true;
-                startX = e.touches[0].pageX - scrollLeft;
                 track.style.animationPlayState = 'paused';
+                startX = e.touches[0].pageX;
+                const transform = window.getComputedStyle(track).transform;
+                if (transform !== 'none') {
+                    const matrix = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                    currentTranslate = parseFloat(matrix[4]) || 0;
+                } else {
+                    currentTranslate = 0;
+                }
             });
 
             track.addEventListener('touchend', () => {
                 if (isDown) {
                     isDown = false;
+                    setTrackPosition(track, speedSeconds);
                     track.style.animationPlayState = 'running';
                 }
             });
@@ -726,9 +781,9 @@
             track.addEventListener('touchmove', (e) => {
                 if (!isDown) return;
                 const x = e.touches[0].pageX;
-                const walk = (x - startX) * 2;
-                scrollLeft -= walk;
-                track.style.transform = `translateX(${scrollLeft}px)`;
+                const walk = (x - startX);
+                const newTranslate = currentTranslate + walk;
+                track.style.transform = `translateX(${newTranslate}px)`;
             });
         }
 
@@ -771,18 +826,25 @@
             const duplicatedPosters = [...posters, ...posters]; 
             track.innerHTML = duplicatedPosters.map(generateItem).join('');
             
-            // Add manual drag scroll logic
+            // Add manual drag/scroll logic
             let isDown = false;
             let startX;
-            let scrollLeft = 0;
+            let currentTranslate = 0;
 
-            // Mouse events
+            // Mouse events (for desktop)
             track.addEventListener('mousedown', (e) => {
                 isDown = true;
-                startX = e.pageX - scrollLeft;
                 track.style.animationPlayState = 'paused';
                 track.style.cursor = 'grabbing';
-                track.style.userSelect = 'none'; // Prevent text selection while dragging
+                track.style.userSelect = 'none';
+                startX = e.pageX;
+                const transform = window.getComputedStyle(track).transform;
+                if (transform !== 'none') {
+                    const matrix = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                    currentTranslate = parseFloat(matrix[4]) || 0;
+                } else {
+                    currentTranslate = 0;
+                }
             });
 
             track.addEventListener('mouseleave', () => {
@@ -790,6 +852,17 @@
                     isDown = false;
                     track.style.cursor = 'grab';
                     track.style.userSelect = 'auto';
+                    setTrackPosition(track, speedSeconds);
+                    track.style.animationPlayState = 'running';
+                }
+            });
+
+            track.addEventListener('mouseup', () => {
+                if (isDown) {
+                    isDown = false;
+                    track.style.cursor = 'grab';
+                    track.style.userSelect = 'auto';
+                    setTrackPosition(track, speedSeconds);
                     track.style.animationPlayState = 'running';
                 }
             });
@@ -798,21 +871,29 @@
                 if (!isDown) return;
                 e.preventDefault();
                 const x = e.pageX;
-                const walk = (x - startX) * 2;
-                scrollLeft -= walk;
-                track.style.transform = `translateX(${scrollLeft}px)`;
+                const walk = (x - startX);
+                const newTranslate = currentTranslate + walk;
+                track.style.transform = `translateX(${newTranslate}px)`;
             });
 
-            // Touch events
+            // Touch events (for mobile)
             track.addEventListener('touchstart', (e) => {
                 isDown = true;
-                startX = e.touches[0].pageX - scrollLeft;
                 track.style.animationPlayState = 'paused';
+                startX = e.touches[0].pageX;
+                const transform = window.getComputedStyle(track).transform;
+                if (transform !== 'none') {
+                    const matrix = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                    currentTranslate = parseFloat(matrix[4]) || 0;
+                } else {
+                    currentTranslate = 0;
+                }
             });
 
             track.addEventListener('touchend', () => {
                 if (isDown) {
                     isDown = false;
+                    setTrackPosition(track, speedSeconds);
                     track.style.animationPlayState = 'running';
                 }
             });
@@ -820,9 +901,9 @@
             track.addEventListener('touchmove', (e) => {
                 if (!isDown) return;
                 const x = e.touches[0].pageX;
-                const walk = (x - startX) * 2;
-                scrollLeft -= walk;
-                track.style.transform = `translateX(${scrollLeft}px)`;
+                const walk = (x - startX);
+                const newTranslate = currentTranslate + walk;
+                track.style.transform = `translateX(${newTranslate}px)`;
             });
         }
 
@@ -1096,7 +1177,7 @@
             </p>
 
             <!-- EDIT: Updated grid layout for better cohesion -->
-            <div class="max-w-6xl mx-auto grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                 
                 <!-- 3 Months Plan -->
                 <div class="pricing-card card-bg p-8 rounded-xl shadow-2xl border border-gray-700/50 flex flex-col">
