@@ -1431,7 +1431,7 @@
     </div>
 
     <script>
-        // --- FINAL and CORRECTED Google Sheets Form Submission Logic ---
+        // --- UPDATED: Google Sheets Form Submission Logic with Mobile/Desktop Differentiation ---
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('test-form');
             if (form) {
@@ -1439,53 +1439,77 @@
                     // Prevent the form from doing a default page reload
                     e.preventDefault();
                     
-                    const submitButton = form.querySelector('button[type="submit"]');
-                    const originalButtonText = submitButton.innerText;
-                    
-                    // Update button UI to show loading state
-                    submitButton.innerText = 'Envoi en cours...';
-                    submitButton.disabled = true;
-
-                    // Your API URL from SheetDB
-                    const apiUrl = 'https://sheetdb.io/api/v1/ew5bjcg21y2r9'; 
-
-                    // Manually get the data from each form field
-                    const data = {
-                        name: document.getElementById('name').value,
-                        country: document.getElementById('country').value,
-                        email: document.getElementById('email').value
+                    // Function to detect if the user is on a mobile device
+                    function isMobileDevice() {
+                        return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
                     };
 
-                    // Send the data to your Google Sheet using the SheetDB API
-                    fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        // The data object MUST be wrapped in a "data" object
-                        body: JSON.stringify({
-                            data: data
+                    // If on mobile, open the email app instead of submitting to Google Sheets
+                    if (isMobileDevice()) {
+                        const name = document.getElementById('name').value;
+                        const country = document.getElementById('country').value;
+                        const email = document.getElementById('email').value;
+                        
+                        const emailAddress = "contactfrancy3@gmail.com";
+                        const subject = `Demande de Test IPTV`;
+                        const body = `Bonjour,\n\nJe souhaite demander un test IPTV de 24 heures.\n\nNom: ${name}\nPays: ${country}\nEmail: ${email}\n\nVeuillez me fournir les détails pour accéder au test.\n\nCordialement,`;
+                        
+                        // Open the email app
+                        window.location.href = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                        
+                        // Show a confirmation modal
+                        showModal('Demande envoyée !', 'Nous avons bien reçu votre demande de test. Nous vous contacterons très prochainement avec les détails d\'accès.');
+                        form.reset(); // Clear the form fields
+                    } else {
+                        // Desktop: Submit to Google Sheets as before
+                        const submitButton = form.querySelector('button[type="submit"]');
+                        const originalButtonText = submitButton.innerText;
+                        
+                        // Update button UI to show loading state
+                        submitButton.innerText = 'Envoi en cours...';
+                        submitButton.disabled = true;
+
+                        // Your API URL from SheetDB
+                        const apiUrl = 'https://sheetdb.io/api/v1/ew5bjcg21y2r9'; 
+
+                        // Manually get the data from each form field
+                        const data = {
+                            name: document.getElementById('name').value,
+                            country: document.getElementById('country').value,
+                            email: document.getElementById('email').value
+                        };
+
+                        // Send the data to your Google Sheet using the SheetDB API
+                        fetch(apiUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            // The data object MUST be wrapped in a "data" object
+                            body: JSON.stringify({
+                                data: data
+                            })
                         })
-                    })
-                    .then(response => response.json())
-                    .then(result => {
-                        // Check if the API confirms that the row was created
-                        if (result.created) {
-                            showModal('Demande Reçue !', 'Merci ! Votre demande de test a bien été envoyée. Nous vous contacterons très prochainement.');
-                            form.reset(); // Clear the form fields for the next entry
-                        } else {
-                            showModal('Erreur', 'Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showModal('Erreur de Connexion', 'Une erreur de réseau est survenue. Veuillez réessayer.');
-                    })
-                    .finally(() => {
-                        // Restore the button UI in all cases
-                        submitButton.innerText = originalButtonText;
-                        submitButton.disabled = false;
-                    });
+                        .then(response => response.json())
+                        .then(result => {
+                            // Check if the API confirms that the row was created
+                            if (result.created) {
+                                showModal('Demande Reçue !', 'Merci ! Votre demande de test a bien été envoyée. Nous vous contacterons très prochainement.');
+                                form.reset(); // Clear the form fields for the next entry
+                            } else {
+                                showModal('Erreur', 'Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showModal('Erreur de Connexion', 'Une erreur de réseau est survenue. Veuillez réessayer.');
+                        })
+                        .finally(() => {
+                            // Restore the button UI in all cases
+                            submitButton.innerText = originalButtonText;
+                            submitButton.disabled = false;
+                        });
+                    }
                 });
             }
         });
