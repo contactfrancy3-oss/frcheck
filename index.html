@@ -1511,16 +1511,20 @@
                             console.error('Error:', error);
                             showModal('Erreur de Connexion', 'Une erreur de réseau est survenue. Veuillez réessayer.');
                         })
-                        .finally(() => {
-                            // Restore the button UI in all cases
-                            submitButton.innerText = originalButtonText;
-                            submitButton.disabled = false;
-                        });
-                    }
-                });
-            }
-        });
-    </script>
-</body>
+                         .finally(() => {
+                        // Restore the button UI in all cases
+                        submitButton.innerText = originalButtonText;
+                        submitButton.disabled = false;
+                    });
+                }
+            });
+        }
+    });
+</script>
 
+<p style="font-size:12px; text-align:center; margin-top:20px;">
+    <a href="iptv-canada.html">IPTV Canada</a>
+</p>
+
+</body>
 </html>
